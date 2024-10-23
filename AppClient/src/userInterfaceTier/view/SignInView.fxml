@@ -93,7 +93,7 @@
                 <HBox alignment="CENTER" prefHeight="42.0" prefWidth="418.0" spacing="5.0">
                     <children>
                         <Label prefHeight="18.0" prefWidth="202.0" text="Do you not have an account?" />
-                        <Hyperlink fx:id="hypSignUp" text="Sign In" textFill="#ffad0f" />
+                        <Hyperlink fx:id="hypSignUp" text="Sign Up" textFill="#ffad0f" />
                     </children>
                     <padding>
                         <Insets top="30.0" />
