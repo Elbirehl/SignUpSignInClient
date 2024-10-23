@@ -38,6 +38,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logicalExceptions.ServerErrorException;
+import logicalExceptions.UserExistErrorException;
 import logicalModel.interfaces.Signable;
 import logicalModel.model.User;
 import uiExceptions.MaxCityCharacterException;
@@ -237,6 +239,7 @@ public class SignUpController {
      */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
+        stage = new Stage();
         stage.setScene(scene);
 
         //Establecer el titulo de la ventana al valor “SignUp”.
@@ -276,8 +279,6 @@ public class SignUpController {
         tgbEyePasswd.setOnAction(this::handelEyeIconToggleButtonAction);
         tgbEyeConfirmPasswd.setOnAction(this::handelEyeIconToggleButtonAction);
 
-        //Handle para manejar el boton btnSignUp
-        btnSignUp.setOnAction(this::handleSignUp);
         //Haddle para manejar el hiperlink hypSigIn
         hypSignUp.setOnAction(this::handleHyperLinkSignIn);
         //Haddle para manejar el cierre de la ventana
@@ -285,20 +286,6 @@ public class SignUpController {
         signable = ClientFactory.getSignable();
         stage.showAndWait();
 
-    }
-
-    /**
-     * Sets the stage for the current window.
-     *
-     * @param stage The stage to be set for this window.
-     *
-     * This method assigns the provided stage to the instance variable, allowing
-     * further configuration and manipulation of the window as needed.
-     *
-     * @author Elbire
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     /**
@@ -394,7 +381,7 @@ public class SignUpController {
      * @authors Elbire, Meylin
      */
     @FXML
-    private void handleSignUp(ActionEvent event) {
+    private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException{
         // Limpiar mensajes de error cada que se de al boton btnSignUp
         clearErrorLabels();
         User newUser;
@@ -509,16 +496,7 @@ public class SignUpController {
      */
     @FXML
     private void handleHyperLinkSignIn(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("userInterfaceTier/view/SignInView.fxml"));
-            Parent root = loader.load();
-            SignInController controller = loader.getController();
-            this.stage.close();
-
-        } catch (IOException ex) {
-            Logger.getLogger(SignInController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
+        stage.close();
     }
 
     /**
@@ -564,9 +542,9 @@ public class SignUpController {
         tfShowPassword.setPromptText("Enter your password");
         tfShowConfirmPassword.setPromptText("Repeat your password");
         tfStreet.setPromptText("Enter your street");
-        tfZip.setPromptText("Enter you ZIP (ej. 48013)");
+        tfZip.setPromptText("Enter you ZIP code");
         tfCity.setPromptText("Enter your city");
-        tfMobile.setPromptText("Enter your mobile phone");
+        tfMobile.setPromptText("Enter your mobile");
 
     }
 
@@ -764,20 +742,7 @@ public class SignUpController {
      */
     public void handleCloseConfirmation(ButtonType response) {
         if (response == ButtonType.OK) {
-            //  Si el usuario confirma, cerrar la ventana y abrir la ventana Sign In.
-            //  Sino confirma, mantener la ventana abierta.
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("userInterfaceTier/view/SignInView.fxml"));
-                Parent root = loader.load();
-                SignInController controller = loader.getController();
-                stage.close();
-                Stage signInStage = new Stage();
-                signInStage.setScene(new Scene(root));
-                signInStage.setTitle("Sign In");
-                signInStage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            stage.close();
         }
     }
 }

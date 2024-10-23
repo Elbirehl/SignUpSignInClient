@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPane" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignInController">
+<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignInController">
     <children>
         <ImageView fitHeight="550.0" fitWidth="917.0" layoutX="92.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -93,7 +93,7 @@
                 <HBox alignment="CENTER" prefHeight="42.0" prefWidth="418.0" spacing="5.0">
                     <children>
                         <Label prefHeight="18.0" prefWidth="202.0" text="Do you not have an account?" />
-                        <Hyperlink fx:id="hypSignUp" text="Sign In" textFill="#ffad0f" />
+                        <Hyperlink fx:id="hypSignUp" text="Sign Up" textFill="#ffad0f" />
                     </children>
                     <padding>
                         <Insets top="30.0" />

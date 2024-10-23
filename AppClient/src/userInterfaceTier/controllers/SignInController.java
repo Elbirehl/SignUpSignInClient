@@ -229,7 +229,6 @@ public class SignInController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignUpView.fxml"));
             Parent root = (Parent) loader.load();
             SignUpController controller = ((SignUpController) loader.getController());
-            controller.setStage(stage);
             controller.initStage(root);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
