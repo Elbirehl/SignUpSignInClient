@@ -9,6 +9,9 @@ import logicalModel.message.Message;
 import logicalModel.model.User;
 
 /**
+ *
+ * @author 2dam
+ * Tiene el codigo de los sockets
  * Clase para establecer una conexión con el servidor y enviar un objeto User.
  */
 public class ClientSocket {
@@ -23,9 +26,9 @@ public class ClientSocket {
             ResourceBundle configFile = ResourceBundle.getBundle("config.config");
             String ip = configFile.getString("IP");
             int port = Integer.parseInt(configFile.getString("PORT"));
-            
+
             socket = new Socket(ip, port);
-            
+
             write = new ObjectOutputStream(socket.getOutputStream());
             read = new ObjectInputStream(socket.getInputStream());
 
@@ -34,7 +37,7 @@ public class ClientSocket {
 
             // Recibir respuesta del servidor
             response = (Message) read.readObject();
-            
+
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {

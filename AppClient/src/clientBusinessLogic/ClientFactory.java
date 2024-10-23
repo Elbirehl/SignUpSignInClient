@@ -8,10 +8,10 @@ package clientBusinessLogic;
 import logicalModel.interfaces.Signable;
 
 /**
- *
- * @author Elbire and Irati 
+ * @author Elbire and Irati
  */
 public class ClientFactory {
+
     public static Signable getSignable(){
         return new Client();
     }

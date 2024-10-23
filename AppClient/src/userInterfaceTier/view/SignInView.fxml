@@ -81,7 +81,7 @@
                         <Insets />
                     </VBox.margin>
                 </Label>
-      
+
                 <Button fx:id="btnAccept" onAction="#handleButtonAction" prefHeight="18.0" prefWidth="62.0" style="-fx-background-color: ffad0f;" text="Accept" textAlignment="CENTER">
                     <font>
                         <Font name="Algerian" size="10.0" />

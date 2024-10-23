@@ -17,10 +17,10 @@ import userInterfaceTier.controllers.SignInController;
 /**
  * The ClientApplication class is the entry point for the JavaFX application.
  * It initializes the application and sets up the primary stage.
- * 
+ *
  * This class extends javafx.application.Application and is responsible for loading the
  * SignInView FXML file and initializing the SignInController.
- * 
+ *
  * @author Irati
  */
 public class ClientApplication extends javafx.application.Application {
@@ -29,17 +29,17 @@ public class ClientApplication extends javafx.application.Application {
      */
     public ClientApplication() {
     }
-    
+
     /**
      * The start method is called when the application is launched. It sets up the primary stage
      * by loading the SignInView FXML file and initializing the SignInController.
-     * 
+     *
      * @param stage the primary stage for this application, onto which the application scene can be set.
      * @throws IOException if there is an error loading the FXML file.
      */
     @Override
     public void start(Stage stage) throws IOException {
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
@@ -49,17 +49,18 @@ public class ClientApplication extends javafx.application.Application {
             controller.setStage(stage);
 
             controller.initStage(root);
-       } catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(ClientApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
      * The main method is the entry point of the application.
-     * 
+     *
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
+
         launch(args);
     }
 

@@ -28,16 +28,16 @@ public class Client implements Signable {
         Message request  = new Message();
         request.setUser(user);
         request.setMessage(MessageType.SIGN_IN_REQUEST);
-        
+
         Message response = ClientSocket.sendRecieveMessage(request);
-        
+
         if (response == null) {
-        throw new ServerErrorException("No response from server.");
+            throw new ServerErrorException("No response from server.");
         }
 
         // Creamos una variable para guardar el usuario
         User resultUser = null;
-    
+
         // Aquí podrías manejar la respuesta del servidor y devolver el usuario o null en caso de error
         if (response != null) {
             if (response.getMessage() == MessageType.OK_RESPONSE) {
@@ -61,3 +61,4 @@ public class Client implements Signable {
     }
 
 }
+
