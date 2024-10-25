@@ -5,8 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import logicalModel.message.Message;
-import logicalModel.model.User;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -16,6 +18,7 @@ import logicalModel.model.User;
  */
 public class ClientSocket {
 
+    private static Logger logger = Logger.getLogger(ClientSocket.class.getName());
     public static Message sendRecieveMessage(Message request) {
         Socket socket = null;
         ObjectInputStream read = null;
@@ -39,10 +42,11 @@ public class ClientSocket {
             response = (Message) read.readObject();
 
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
+            logger.log(Level.SEVERE, "Error: {0}", e.getMessage());
+             e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            logger.log(Level.SEVERE, "Error: Class not found", ex);
+        }  finally {
             try {
                 if (socket != null) {
                     socket.close();
@@ -56,14 +60,9 @@ public class ClientSocket {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("Fin cliente");
+            logger.info("Fin cliente");
         }
         return response;
 
-    }
-
-    public static void main(String[] args){
-        ClientSocket clientSocket = new ClientSocket();
-        User user = new User();
     }
 }
