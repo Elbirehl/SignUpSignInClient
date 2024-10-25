@@ -55,7 +55,7 @@ public class Client implements Signable {
     }
 
     @Override
-    public User signUp(User user) throws ServerErrorException, UserExistErrorException {
+    public User signUp(User user) throws ServerErrorException, UserExistErrorException, MaxThreadsErrorException {
         Message request = new Message();
         request.setUser(user);
         request.setMessage(MessageType.SIGN_UP_REQUEST);
@@ -77,6 +77,9 @@ public class Client implements Signable {
                 throw new ServerErrorException("Internal server error");
             } else if (response.getMessage() == MessageType.USER_EXISTS_ERROR) {
                 throw new UserExistErrorException("The user alredy exists");
+            } else if (response.getMessage() == MessageType.MAX_THREADS_ERROR) {
+                throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
+
             }
         }
         return resultUser;

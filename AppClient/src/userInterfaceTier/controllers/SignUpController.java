@@ -38,6 +38,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logicalExceptions.MaxThreadsErrorException;
 import logicalExceptions.ServerErrorException;
 import logicalExceptions.UserExistErrorException;
 import logicalModel.interfaces.Signable;
@@ -228,6 +229,7 @@ public class SignUpController {
      * Interface for the sign-up business logic.
      */
     private Signable signable;
+    private Logger logger = Logger.getLogger(SignUpController.class.getName());
 
     /**
      * Initializes and configures the registration window (SignUp).
@@ -381,7 +383,7 @@ public class SignUpController {
      * @authors Elbire, Meylin
      */
     @FXML
-    private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException{
+    private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException {
         // Limpiar mensajes de error cada que se de al boton btnSignUp
         clearErrorLabels();
         User newUser;
@@ -474,10 +476,17 @@ public class SignUpController {
                     //de SignUp y se devuelve el control a la ventana SignIn.
                     stage.close();
                 }
-            } catch (Exception e) {
+            } catch (ServerErrorException e) {
                 //metenr los errores que nos mande el servidor, que aun no los tengo.
+                new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
+                logger.severe(e.getLocalizedMessage());
+            } catch (UserExistErrorException e) {
+                new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
+                logger.severe(e.getLocalizedMessage());
+            } catch (MaxThreadsErrorException e) {
+                new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
+                logger.severe(e.getLocalizedMessage());
             }
-
         } catch (TextEmptyException e) {
             //Si todos los campos no están diligenciados lazar la  exception “TextEmptyException” en “labelErrorEmpty”.
             labelErrorEmpty.setText(e.getMessage());

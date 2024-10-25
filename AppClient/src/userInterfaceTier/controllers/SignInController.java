@@ -16,7 +16,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -182,7 +184,7 @@ public class SignInController {
      * @throws TextEmptyException if any input field is empty.
      */
     @FXML
-    private void handleButtonAction(ActionEvent event) throws WrongEmailFormatException, IOException, TextEmptyException, MaxThreadsErrorException, ServerErrorException, SignInErrorException, UserNotActiveException {
+    private void handleButtonAction(ActionEvent event) throws SignInErrorException, UserNotActiveException {
       
         String email = this.emailText.getText().trim();
         String passwrd = this.pfPasswrd.getText().trim();
@@ -209,9 +211,22 @@ public class SignInController {
         } catch (TextEmptyException e) {
             lblError.setText(e.getMessage());
             logger.severe(e.getMessage());
+        } catch (MaxThreadsErrorException e){
+            new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
+            logger.severe(e.getLocalizedMessage());
+        } catch (ServerErrorException e){
+            new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
+            logger.severe(e.getLocalizedMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (UserNotActiveException e){
+            new Alert(Alert.AlertType.ERROR, "User is not active", ButtonType.OK).showAndWait();
+            logger.severe(e.getLocalizedMessage());
+        }catch (SignInErrorException e){
+            new Alert(Alert.AlertType.ERROR, "User can't be found", ButtonType.OK).showAndWait();
+            logger.severe(e.getLocalizedMessage());
         }
     }
-
     /**
      * Handles the action of the sign-up hyperlink.
      * Navigates to the sign-up view.
