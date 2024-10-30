@@ -26,7 +26,7 @@ public class PatternZipIncorrectException extends Exception {
     public static void validateZipFormat(TextField tfZip) throws PatternZipIncorrectException {
         if (!tfZip.getText().matches("\\d{5}$")) {
             // Throw exception if the ZIP code is not a valid 5-digit number
-            throw new PatternZipIncorrectException("Zip code must have 5 numeric digits");
+            throw new PatternZipIncorrectException("ZIP code must be 5 digits.");
         }
     }
 }

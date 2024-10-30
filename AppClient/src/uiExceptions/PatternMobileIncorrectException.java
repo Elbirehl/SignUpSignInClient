@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uiExceptions;
 
 import javafx.scene.control.TextField;
@@ -33,7 +28,7 @@ public class PatternMobileIncorrectException extends Exception {
     public static void validateMobileFormat(TextField tfMobile) throws PatternMobileIncorrectException {
         if (!tfMobile.getText().matches("\\d{9}$")) {
             // Throw exception if the mobile number is not 9 digits
-            throw new PatternMobileIncorrectException("Mobile must have 9 numeric digits");
+            throw new PatternMobileIncorrectException("Mobile must be 9 digits.");
         }
     }
 }

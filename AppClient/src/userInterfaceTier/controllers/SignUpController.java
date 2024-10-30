@@ -233,7 +233,7 @@ public class SignUpController {
      * Interface for the sign-up business logic.
      */
     private Signable signable;
-    private Logger logger = Logger.getLogger(SignUpController.class.getName());
+    private static final Logger logger = Logger.getLogger(SignUpController.class.getName());
 
     /**
      * Initializes and configures the registration window (SignUp).
@@ -246,46 +246,46 @@ public class SignUpController {
         stage = new Stage();
         stage.setScene(scene);
 
-        //Establecer el titulo de la ventana al valor “SignUp”.
+        // Set the title of the window to "SignUp".
         stage.setTitle("SignUp");
-        //Añadir a la ventana un icono de una catrina.
+        // Add an icon of a "catrina" to the window.
         Image icon = new Image(getClass().getResourceAsStream("/resources/images/catrina.png"));
         stage.getIcons().add(icon);
-        //La ventana no debe ser redimensionable.
+        // Make the window non-resizable.
         stage.setResizable(false);
-        //Ventana modal.
+        // Set the window to be modal.
         stage.initModality(Modality.APPLICATION_MODAL);
         clearForm();
-        //El foco se centra en el campo FullName (tfFullName).
+        // Set focus on the FullName field (tfFullName).
         tfFullName.isFocused();
-        //El botón "btnSignUp" es el botón por defecto.
+        // Set "btnSignUp" as the default button.
         btnSignUp.setDefaultButton(true);
-        //El campo “tfShowPassword” estará oculto.
+        // Make the "tfShowPassword" field hidden.
         tfShowPassword.setVisible(false);
-        //El campo “tfShowConfirmPassword” estará oculto
+        // Make the "tfShowConfirmPassword" field hidden.
         tfShowConfirmPassword.setVisible(false);
-        //Los labelError estarán ocultos.MODIFICAR EL METODO SI DA TIEMPO
+        // Hide all error labels.
         clearErrorLabels();
         setTooltips();
         setPromptText();
-        //Crear un ContextMenu con las opciones: Reset Form, Help, y About App.
+        // Create a ContextMenu with options: Reset Form, Help, and About App.
         setUpContextMenu();
 
-        //Handle para que el texto cambio de texto en pfHiddenPassword y tfShowPassword.
+        // Add listener for password visibility toggle between pfHiddenPassword and tfShowPassword.
         pfHiddenPassword.textProperty().addListener(this::passwrdIsVisible);
         tfShowPassword.textProperty().addListener(this::passwrdIsVisible);
 
-        //Handle para que el texto cambio de texto en pfHiddenConfirmPassword" y tfShowConfirmPassword.
+        // Add listener for confirm password visibility toggle between pfHiddenConfirmPassword and tfShowConfirmPassword.
         pfHiddenConfirmPassword.textProperty().addListener(this::passwrdIsVisible);
         tfShowConfirmPassword.textProperty().addListener(this::passwrdIsVisible);
 
-        //Handle para manejar el tgbEyePasswd y tbgEyeConfirmPasswd
+        // Add handler for eye toggle buttons (tgbEyePasswd and tgbEyeConfirmPasswd).
         tgbEyePasswd.setOnAction(this::handelEyeIconToggleButtonAction);
         tgbEyeConfirmPasswd.setOnAction(this::handelEyeIconToggleButtonAction);
 
-        //Haddle para manejar el hiperlink hypSigIn
+        // Add handler for the hyperlink to SignIn view (hypSignUp).
         hypSignUp.setOnAction(this::handleHyperLinkSignIn);
-        //Haddle para manejar el cierre de la ventana
+        // Add handler to manage the window close request.
         stage.setOnCloseRequest(this::handleCloseRequest);
         signable = ClientFactory.getSignable();
         stage.showAndWait();
@@ -308,14 +308,14 @@ public class SignUpController {
      */
     public void passwrdIsVisible(ObservableValue observable, String oldValue, String newValue) {
 
-        //El texto del "pfHiddenPassword" se copiará en “tfShowPassword” y viceversa.
+        // The text from "pfHiddenPassword" is copied to "tfShowPassword" and vice versa.
         if (pfHiddenPassword.isVisible()) {
             tfShowPassword.setText(pfHiddenPassword.getText());
         } else if (tfShowPassword.isVisible()) {
             pfHiddenPassword.setText(tfShowPassword.getText());
         }
 
-        //El texto del "pfHiddenConfirmPassword" se copiará en “tfShowConfirmPassword” y viceversa.
+        // The text from "pfHiddenConfirmPassword" is copied to "tfShowConfirmPassword" and vice versa.
         if (pfHiddenConfirmPassword.isVisible()) {
             tfShowConfirmPassword.setText(pfHiddenConfirmPassword.getText());
 
@@ -329,138 +329,157 @@ public class SignUpController {
      * password fields.
      *
      * This method updates the visibility of the password fields and the
-     * corresponding images based on whether the toggle buttons for showing or
-     * hiding the password are selected.
+     * corresponding eye icons based on whether the toggle buttons for showing
+     * or hiding the passwords are selected.
      *
      * @param event The action event triggered by the toggle button.
      */
     @FXML
     private void handelEyeIconToggleButtonAction(ActionEvent event) {
 
-        Image ojoTachado = new Image(getClass().getResourceAsStream("/resources/images/HidePasswdOrange.png"));
-        Image ojoNormal = new Image(getClass().getResourceAsStream("/resources/images/ShowPasswdOrange.png"));
+        Image hiddenEyeIcon = new Image(getClass().getResourceAsStream("/resources/images/HidePasswdOrange.png"));
+        Image visibleEyeIcon = new Image(getClass().getResourceAsStream("/resources/images/ShowPasswdOrange.png"));
 
         if (tgbEyePasswd.isSelected()) {
-            //PasswordField “pfHiddenPassword” se volverá invisible
+            // PasswordField “pfHiddenPassword” will become invisible.
             pfHiddenPassword.setVisible(false);
-            //TextField “tfShowPassword” se volverá visible
+            // TextField “tfShowPassword” will become visible.
             tfShowPassword.setVisible(true);
-            //La imgimgEyePasswd cambia a HidePasswdOrange.png
-            imgEyePasswd.setImage(ojoTachado);
+            // The imgEyePasswd icon changes to HidePasswdOrange.png.
+            imgEyePasswd.setImage(hiddenEyeIcon);
         } else {
-            //TextField “tfShowPassword” se volverá invisible
+            // TextField “tfShowPassword” will become invisible.
             tfShowPassword.setVisible(false);
-            //PasswordField “pfHiddenPassword” se volverá visible
+            // PasswordField “pfHiddenPassword” will become visible.
             pfHiddenPassword.setVisible(true);
-            //La imgEyePasswd cambia a ShowPasswdOrange.png
-            imgEyePasswd.setImage(ojoNormal);
+            // The imgEyePasswd icon changes to ShowPasswdOrange.png.
+            imgEyePasswd.setImage(visibleEyeIcon);
         }
 
         if (tgbEyeConfirmPasswd.isSelected()) {
-            //PasswordField pfHiddenConfirmPassword se volverá invisible
+            // PasswordField “pfHiddenConfirmPassword” will become invisible.
             pfHiddenConfirmPassword.setVisible(false);
-            //TextField “tfShowConfirmPassword” se volverá visible
+            // TextField “tfShowConfirmPassword” will become visible.
             tfShowConfirmPassword.setVisible(true);
-            //La imgEyeConfirmPasswd cambia a HidePasswdOrange.png
-            imgEyeConfirmPasswd.setImage(ojoTachado);
+            // The imgEyeConfirmPasswd icon changes to HidePasswdOrange.png.
+            imgEyeConfirmPasswd.setImage(hiddenEyeIcon);
         } else {
-            //TextField “tfShowConfirmPassword” se volverá invisible
+            // TextField “tfShowConfirmPassword” will become invisible.
             tfShowConfirmPassword.setVisible(false);
-            //PasswordField pfHiddenConfirmPassword se volverá visible
+            // PasswordField “pfHiddenConfirmPassword” will become visible.
             pfHiddenConfirmPassword.setVisible(true);
-            //La imgEyeConfirmPasswd cambia a ShowPasswdOrange.png
-            imgEyeConfirmPasswd.setImage(ojoNormal);
+            // The imgEyeConfirmPasswd icon changes to ShowPasswdOrange.png.
+            imgEyeConfirmPasswd.setImage(visibleEyeIcon);
         }
     }
 
     /**
      * Handles the sign-up action when the user clicks the "Sign Up" button.
      *
+     * This method validates the user input in each field, displays error
+     * messages for any validation failures, and attempts to register a new user
+     * by creating a User object and calling the sign-up method from the
+     * signable interface.
+     *
      * @param event The action event triggered by the button click.
+     * @throws ServerErrorException If there is an issue with server
+     * availability.
+     * @throws UserExistErrorException If the email address already exists in
+     * the system.
      */
     @FXML
     private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException {
-        // Limpiar mensajes de error cada que se de al boton btnSignUp
+        // Clear error messages each time btnSignUp is clicked.
         clearErrorLabels();
         User newUser;
         User newUserValidate;
-        //Variables para crear un usuario
+        // Variables to create a new user.
         String name = null, street = null, city = null, password = null, email = null;
         int zip = 0, mobile = 0;
         boolean active;
-
         boolean focused = false;
 
         try {
-            //Validar que todos los campos estén diligenciados
+            // Validate that all required fields are filled out.
             TextEmptyException.checkFields(tfFullName, tfEmail, pfHiddenPassword, pfHiddenConfirmPassword,
                     tfStreet, tfCity, tfZip, tfMobile);
+
             try {
-                //Validar que el campo "tfFullName" no contenga números.
+                // Validate that the "tfFullName" field does not contain any numbers.
                 PatternFullNameIncorrectException.validateFullName(tfFullName);
                 name = tfFullName.getText();
             } catch (PatternFullNameIncorrectException e) {
-                //Si contiene números mostrar en “labelErrorFullName”, exeption “PatternFullNameIncorrectException”.
+                // If it contains numbers, show "PatternFullNameIncorrectException" in labelErrorFullName.
                 labelErrorFullName.setText(e.getMessage());
                 if (!focused) {
                     tfFullName.requestFocus();
                     focused = true;
                 }
             }
+
             try {
-                //Validar que en el campo "tfEmail" se cumpla con el formato correcto del email introducido y con un maximo de 320 caracteres.
+                // Validate that the "tfEmail" field follows correct email format and has a maximum of 320 characters.
                 PatternEmailIncorrectException.validateEmail(tfEmail);
                 email = tfEmail.getText();
             } catch (PatternEmailIncorrectException e) {
-                //Sino, mostrar en “labelErrorEmail”, exeption “PatternEmailncorrectException”.
+                // If invalid, show "PatternEmailIncorrectException" in labelErrorEmail.
                 labelErrorEmail.setText(e.getMessage());
                 if (!focused) {
                     tfEmail.requestFocus();
                     focused = true;
                 }
             }
+
             try {
-                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword); 
+                // Validate that the password format in "tfShowPassword" meets criteria.
+                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
                 try {
-                    //Validar que el contenido de “pfHiddenConfirmPassword” sea igual al contenido almacenado en “pfHiddenPassword”.
+                    // Validate that "pfHiddenConfirmPassword" matches "pfHiddenPassword".
                     PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
                     password = pfHiddenPassword.getText();
                 } catch (PasswdsDontMatchException e) {
-                    //Si no cumple mostrar en “labelErrorConfirmPasswd”, exeption “PasswdsDontMatchException”
+                    // If not matching, show "PasswdsDontMatchException" in labelErrorConfirmPasswd.
                     labelErrorConfirmPasswd.setText(e.getMessage());
                     if (!focused) {
-                        pfHiddenPassword.requestFocus();
+                        if (tfShowConfirmPassword.isVisible()) {
+                        tfShowConfirmPassword.requestFocus();
+                    }else{
+                        pfHiddenConfirmPassword.requestFocus();
+                    }
                         focused = true;
                     }
                 }
             } catch (PatternPasswordIncorrectException e) {
                 labelErrorPasswd.setText(e.getMessage());
                 if (!focused) {
-                    tfShowPassword.requestFocus();
+                    if (tfShowPassword.isVisible()) {
+                        tfShowPassword.requestFocus();
+                    }else{
+                        pfHiddenPassword.requestFocus();
+                    }
                     focused = true;
                 }
             }
-            
-            
 
             try {
-                //Validar que "pfStreet" no tenga mas de 255 carácteres.
+                // Validate that "tfStreet" does not exceed 255 characters.
                 MaxStreetCharacterException.validateStreetLength(tfStreet);
                 street = tfStreet.getText();
             } catch (MaxStreetCharacterException e) {
-                //Sino, mostrar en “labelErrorStreet”, exception “MaxStreetCharacterException”.
+                // If exceeded, show "MaxStreetCharacterException" in labelErrorStreet.
                 labelErrorStreet.setText(e.getMessage());
                 if (!focused) {
                     tfStreet.requestFocus();
                     focused = true;
                 }
             }
+
             try {
-                //Validar que "tfZip" no tenga letras y que tenga un máximo de 5 números.
+                // Validate that "tfZip" contains only digits and is a maximum of 5 numbers.
                 PatternZipIncorrectException.validateZipFormat(tfZip);
                 zip = Integer.parseInt(tfZip.getText());
             } catch (PatternZipIncorrectException e) {
-                //Sino, mostrar en “labelErrorZip”, exception “PatternZipIncorrectException”.
+                // If invalid, show "PatternZipIncorrectException" in labelErrorZip.
                 labelErrorZip.setText(e.getMessage());
                 if (!focused) {
                     tfZip.requestFocus();
@@ -469,11 +488,11 @@ public class SignUpController {
             }
 
             try {
-                //Validar que "tfCity" tena como máximo 58 caracteres.
+                // Validate that "tfCity" does not exceed 58 characters.
                 MaxCityCharacterException.validateCityLength(tfCity);
                 city = tfCity.getText();
             } catch (MaxCityCharacterException e) {
-                //Si excede mostrar en “labelErrorCity” exception “MaxCityCharacterException”.
+                // If exceeded, show "MaxCityCharacterException" in labelErrorCity.
                 labelErrorCity.setText(e.getMessage());
                 if (!focused) {
                     tfCity.requestFocus();
@@ -482,41 +501,38 @@ public class SignUpController {
             }
 
             try {
-                //Validar que "tfMobile" tenga solo números y un máximo de 9 caracteres.
+                // Validate that "tfMobile" contains only digits and has a maximum of 9 characters.
                 PatternMobileIncorrectException.validateMobileFormat(tfMobile);
                 mobile = Integer.parseInt(tfMobile.getText());
             } catch (PatternMobileIncorrectException e) {
-                //Sino mostrar en “labelErrorMobile” exception “PatternMobileIncorrectException”.
+                // If invalid, show "PatternMobileIncorrectException" in labelErrorMobile.
                 labelErrorMobile.setText(e.getMessage());
                 if (!focused) {
                     tfMobile.requestFocus();
                     focused = true;
                 }
             }
-            //Si se selecciona, el usuario se considerará activo.
-            // Si no se selecciona, el usuario se considerará inactivo.
+
+            // If selected, the user will be considered active; otherwise, inactive.
             active = cbxStatus.selectedProperty().getValue();
-            /*Una vez que todas las validaciones están realizadas,
-             *carga los datos de los campos en un objeto User.
-             */
+
+            // Once all validations pass, load the data from fields into a User object.
             if (!(email == null || password == null || name == null || street == null || mobile == 0 || city == null || zip == 0)) {
                 newUser = new User(email, password, name, street, mobile, city, zip, active);
-                /*Se llama a la factoría “ClientFactory” para conseguir una
-             *implementación de la interfaz “Signable”
-                 */
+
+                // Get an implementation of the "Signable" interface from the "ClientFactory".
                 signable = ClientFactory.getSignable();
                 try {
-                    //y se llama al método signUp  pasándole el objeto User.
+                    // Call the signUp method, passing the User object.
                     newUserValidate = signable.signUp(newUser);
                     if (newUserValidate != null) {
-                        //Mostrar un Alert de tipo INFORMATION con un mensaje "Registro exitoso".
+                        // Show an INFORMATION alert with the message "Registration successful."
                         new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered.", ButtonType.OK).showAndWait();
-                        //Después de aceptar el mensaje, se cierra la ventana
-                        //de SignUp y se devuelve el control a la ventana SignIn.
+                        // After accepting the message, close the SignUp window and return control to the SignIn window.
                         stage.close();
                     }
                 } catch (ServerErrorException e) {
-                    //metenr los errores que nos mande el servidor, que aun no los tengo.
+                    // Handle server-related errors with an alert message.
                     new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
                     logger.severe(e.getLocalizedMessage());
                 } catch (UserExistErrorException e) {
@@ -528,7 +544,7 @@ public class SignUpController {
                 }
             }
         } catch (TextEmptyException e) {
-            //Si todos los campos no están diligenciados lazar la  exception “TextEmptyException” en “labelErrorEmpty”.
+            // If fields are missing, trigger "TextEmptyException" in labelErrorEmpty.
             labelErrorEmpty.setText(e.getMessage());
         }
     }
@@ -536,8 +552,9 @@ public class SignUpController {
     /**
      * Handles the action when the user clicks on the hyperlink to sign in.
      *
-     * This method attempts to load the SignIn view and close the current stage.
-     * If an error occurs during the loading process, it logs the exception.
+     * This method closes the current SignUp stage to navigate back to the
+     * SignIn view. If an error occurs during the process, it logs the
+     * exception.
      *
      * @param event The action event triggered by the hyperlink click.
      */
@@ -555,18 +572,25 @@ public class SignUpController {
     private void setTooltips() {
         Tooltip tooltipFN = new Tooltip("Enter your full name");
         Tooltip.install(tfFullName, tooltipFN);
+
         Tooltip tooltipE = new Tooltip("Enter your email address");
         Tooltip.install(tfEmail, tooltipE);
+
         Tooltip tooltipP = new Tooltip("Enter your password");
         Tooltip.install(tfShowPassword, tooltipP);
+
         Tooltip tooltipRP = new Tooltip("Repeat the password");
         Tooltip.install(tfShowConfirmPassword, tooltipRP);
+
         Tooltip tooltipS = new Tooltip("Enter your street address");
         Tooltip.install(tfStreet, tooltipS);
+
         Tooltip tooltipZ = new Tooltip("Enter your ZIP code");
-        Tooltip.install(tfCity, tooltipZ);
+        Tooltip.install(tfZip, tooltipZ); // Corrected to apply ZIP code tooltip to tfZip
+
         Tooltip tooltipC = new Tooltip("Enter your city");
         Tooltip.install(tfCity, tooltipC);
+
         Tooltip tooltipM = new Tooltip("Enter your phone number");
         Tooltip.install(tfMobile, tooltipM);
     }
@@ -576,21 +600,18 @@ public class SignUpController {
      *
      * This method configures the prompt text that appears in each input field,
      * providing users with a hint about the expected input.
-     *
-     *
      */
     private void setPromptText() {
         tfFullName.setPromptText("Enter your full name");
-        tfEmail.setPromptText("Enter your email (ej.ejemplo@correo.com)");
+        tfEmail.setPromptText("Enter your email (e.g., example@domain.com)");
         pfHiddenPassword.setPromptText("Enter your password");
         pfHiddenConfirmPassword.setPromptText("Repeat your password");
         tfShowPassword.setPromptText("Enter your password");
         tfShowConfirmPassword.setPromptText("Repeat your password");
         tfStreet.setPromptText("Enter your street");
-        tfZip.setPromptText("Enter you ZIP code");
+        tfZip.setPromptText("Enter your ZIP code");
         tfCity.setPromptText("Enter your city");
-        tfMobile.setPromptText("Enter your mobile");
-
+        tfMobile.setPromptText("Enter your mobile number");
     }
 
     /**
@@ -617,7 +638,7 @@ public class SignUpController {
      *
      * This method resets the values of all form fields to their default state.
      * Specifically, it clears the text from the following input fields and sets
-     * the status checkbox to unchecked
+     * the status checkbox to unchecked.
      */
     private void clearForm() {
         tfFullName.clear();
@@ -644,17 +665,17 @@ public class SignUpController {
     private void setUpContextMenu() {
         contextMenu = new ContextMenu();
 
-        //Crear los elementos del menu
+        // Create the menu items
         MenuItem resetFormItem = new MenuItem("Reset Form");
         MenuItem helpItem = new MenuItem("Help");
         MenuItem aboutAppItem = new MenuItem("About App");
         contextMenu.getItems().addAll(resetFormItem, helpItem, aboutAppItem);
 
-        //Handdle de las opciones del menu
+        // Handle the menu options
         resetFormItem.setOnAction(this::handleResetForm);
         helpItem.setOnAction(this::handleHelp);
         aboutAppItem.setOnAction(this::handleAboutApp);
-        //Asociar el Context Menu a toda la ventana
+        // Associate the Context Menu with the entire window
         anchorPane.setOnMouseClicked(this::showContextMenu);
     }
 
@@ -685,7 +706,7 @@ public class SignUpController {
      * @param event The action event that triggered this method.
      */
     private void handleResetForm(ActionEvent event) {
-        //Todos los campos del formulario se restablecen a sus valores predeterminados (vacíos).
+        // All fields in the form are reset to their default (empty) values.
         clearForm();
         clearErrorLabels();
     }
@@ -698,10 +719,9 @@ public class SignUpController {
      * tips on creating a secure password.
      *
      * @param event The action event that triggered this method.
-     *
      */
     private void handleHelp(ActionEvent event) {
-        //Se muestra un cuadro de diálogo (Alert) con errores comunes y recomendaciones de seguridad para crear la cuenta.
+        // An alert dialog is displayed with common errors and security recommendations for creating the account.
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Security Recommendations for Your Password");
         alert.setHeaderText("Security Recommendations");
@@ -722,7 +742,7 @@ public class SignUpController {
      * @param event The action event that triggered this method.
      */
     private void handleAboutApp(ActionEvent event) {
-        //Se muestra un cuadro de diálogo (Alert) con información sobre la aplicación: nombre, versión, autoras, y propósito de la app.
+        // An alert dialog is displayed with information about the application: name, version, authors, and purpose of the app.
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About the Application");
@@ -734,7 +754,7 @@ public class SignUpController {
                 + "Purpose: This window helps the user create an account in the database."
         );
 
-        // Mostrar el cuadro de diálogo y esperar hasta que se cierre
+        // Show the dialog and wait until it is closed
         alert.showAndWait();
     }
 
@@ -743,10 +763,9 @@ public class SignUpController {
      * before closing the application.
      *
      * This method consumes the close request event and invokes a confirmation
-     * dialog to ask the user if they really want to exit the application
+     * dialog to ask the user if they really want to exit the application.
      *
      * @param event The window event that triggered this method.
-     *
      */
     private void handleCloseRequest(WindowEvent event) {
         event.consume();
@@ -758,7 +777,7 @@ public class SignUpController {
      * to exit the application.
      */
     private void showExitConfirmation() {
-        //Mostrar un Alert de tipo CONFIRMATION con el mensaje: "¿Estás seguro de que deseas salir?".
+        // Show a CONFIRMATION Alert with the message: "Are you sure you want to exit?".
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm Exit");
         alert.setHeaderText("Are you sure you want to exit?");

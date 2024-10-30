@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uiExceptions;
 
 import javafx.scene.control.TextField;
@@ -31,7 +26,7 @@ public class MaxCityCharacterException extends Exception {
     public static void validateCityLength(TextField tfCity) throws MaxCityCharacterException {
         if (tfCity.getText().length() > 58) {
             // Throw exception if the city name length exceeds 58 characters
-            throw new MaxCityCharacterException("The city name must be shorter");
+            throw new MaxCityCharacterException("City name must be shorter");
         }
     }
 }
