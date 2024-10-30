@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clientBusinessLogic;
 
 import logicalExceptions.MaxThreadsErrorException;
@@ -16,12 +11,26 @@ import logicalModel.message.MessageType;
 import logicalModel.model.User;
 
 /**
- *
- *
- * @author Olaia, Meylin, Elbire and Irati Implementa la interfaz
+ * Implements the {@code Signable} interface to manage user authentication 
+ * (sign-in and sign-up) via server communication.
+ * Processes server responses and handles exceptions for specific error cases.
+ * 
+ * @author 
+ * Olaia, Meylin, Elbire, and Irati
  */
 public class Client implements Signable {
 
+    /**
+     * Attempts to sign in a user by sending their data to the server.
+     * Returns the {@code User} if successful, or throws an exception based on the server's response.
+     *
+     * @param user the user attempting to sign in
+     * @return the signed-in {@code User} object if successful
+     * @throws MaxThreadsErrorException if the server has reached its thread limit
+     * @throws ServerErrorException if a server error occurs
+     * @throws SignInErrorException if sign-in fails
+     * @throws UserNotActiveException if the user is inactive
+     */
     @Override
     public User signIn(User user) throws MaxThreadsErrorException, ServerErrorException, SignInErrorException, UserNotActiveException {
         Message request = new Message();
@@ -34,26 +43,33 @@ public class Client implements Signable {
             throw new ServerErrorException("No response from server.");
         }
 
-        // Creamos una variable para guardar el usuario
         User resultUser = null;
 
-        // Aquí podrías manejar la respuesta del servidor y devolver el usuario o null en caso de error
-        if (response != null) {
-            if (response.getMessage() == MessageType.OK_RESPONSE) {
-                resultUser = response.getUser();
-            } else if (response.getMessage() == MessageType.MAX_THREADS_ERROR) {
-                throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
-            } else if (response.getMessage() == MessageType.SERVER_ERROR) {
-                throw new ServerErrorException("Internal server error");
-            } else if (response.getMessage() == MessageType.SIGN_IN_ERROR) {
-                throw new SignInErrorException("Error during sign in process.");
-            } else if (response.getMessage() == MessageType.USER_NOT_ACTIVE) {
-                throw new SignInErrorException("The user is not active");
-            }
+        if (response.getMessage() == MessageType.OK_RESPONSE) {
+            resultUser = response.getUser();
+        } else if (response.getMessage() == MessageType.MAX_THREADS_ERROR) {
+            throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
+        } else if (response.getMessage() == MessageType.SERVER_ERROR) {
+            throw new ServerErrorException("Internal server error");
+        } else if (response.getMessage() == MessageType.SIGN_IN_ERROR) {
+            throw new SignInErrorException("Error during sign-in process.");
+        } else if (response.getMessage() == MessageType.USER_NOT_ACTIVE) {
+            throw new UserNotActiveException("The user is not active");
         }
+
         return resultUser;
     }
 
+     /**
+     * Attempts to sign up a new user by sending their data to the server.
+     * Returns the {@code User} if successful, or throws an exception if an error occurs.
+     *
+     * @param user the user attempting to sign up
+     * @return the signed-up {@code User} object if successful
+     * @throws ServerErrorException if a server error occurs
+     * @throws UserExistErrorException if the user already exists
+     * @throws MaxThreadsErrorException if the server has reached its thread limit
+     */
     @Override
     public User signUp(User user) throws ServerErrorException, UserExistErrorException, MaxThreadsErrorException {
         Message request = new Message();
@@ -66,23 +82,18 @@ public class Client implements Signable {
             throw new ServerErrorException("No response from server.");
         }
 
-        // Creamos una variable para guardar el usuario
         User resultUser = null;
 
-        // Aquí podrías manejar la respuesta del servidor y devolver el usuario o null en caso de error
-        if (response != null) {
-            if (response.getMessage() == MessageType.OK_RESPONSE) {
-                resultUser = response.getUser();
-            } else if (response.getMessage() == MessageType.SERVER_ERROR) {
-                throw new ServerErrorException("Internal server error");
-            } else if (response.getMessage() == MessageType.USER_EXISTS_ERROR) {
-                throw new UserExistErrorException("The user alredy exists");
-            } else if (response.getMessage() == MessageType.MAX_THREADS_ERROR) {
-                throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
-
-            }
+        if (response.getMessage() == MessageType.OK_RESPONSE) {
+            resultUser = response.getUser();
+        } else if (response.getMessage() == MessageType.SERVER_ERROR) {
+            throw new ServerErrorException("Internal server error");
+        } else if (response.getMessage() == MessageType.USER_EXISTS_ERROR) {
+            throw new UserExistErrorException("The user already exists");
+        } else if (response.getMessage() == MessageType.MAX_THREADS_ERROR) {
+            throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
         }
+
         return resultUser;
     }
-
 }

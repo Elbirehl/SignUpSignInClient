@@ -30,7 +30,10 @@ import logicalModel.interfaces.Signable;
 import logicalModel.model.User;
 
 /**
- *
+ * Controller for the main application window.
+ * Manages user interaction with the UI and handles the logic for logging out 
+ * and exiting the application.
+ * 
  * @author olaia
  */
 public class MainWindowController {
@@ -76,22 +79,38 @@ public class MainWindowController {
 
     private Stage stage;
 
+     /**
+     * Sets the main window stage.
+     * 
+     * @param stage the main window stage.
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     private Stage signInStage;
 
+   /**
+     * Sets the sign-in stage.
+     * 
+     * @param signInStage the sign-in stage.
+     */
     public void signInStage(Stage signInStage) {
         this.signInStage = stage;
     }
 
     private Signable signable;
 
+   /**
+     * Initializes the main window with data from the signed-in user.
+     * 
+     * @param root the root node of the scene.
+     * @param userSignedIn the user who has signed in.
+     */
     public void initStage(Parent root, User userSignedIn) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        //nombre de la ventana "MainWindow".
+        //Nombre de la ventana "MainWindow".
         stage.setTitle("MainWindow");
         //Añadir un icono personalizado.
         Image icon = new Image(getClass().getResourceAsStream("/resources/images/catrina.png"));
@@ -105,11 +124,16 @@ public class MainWindowController {
         tfMobile.setText(String.valueOf(userSignedIn.getMobile()));
         tfActive.setText(userSignedIn.isActive() ? "Active" : "Inactive");
         stage.show();
-
     }
 
     //Los datos del usuario (nickname, email, mobile y estado del usuario) se cargan y se muestran en TextFields individuales dentro de la ventana.
-    //Se cierra la ventana con el metodo close() y se cierra la aplicación.
+    //Se cierra la ventana y se cierra la aplicación.
+     /**
+     * Handles the action to exit the application.
+     * Displays a confirmation dialog before exiting the application.
+     * 
+     * @param event the action event.
+     */
     private void handleExit(ActionEvent event) {
         //Pedir confirmación al usuario de si desea salir.
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -117,15 +141,21 @@ public class MainWindowController {
         alert.setHeaderText("You are about to exit the application.");
         alert.setContentText("Are you sure you want to exit?");
 
-        // Mostrar el cuadro de diálogo y esperar la respuesta del usuario
+        //Si confirma que desea salir, se cierra sesión. Si no confirma se mantiene la ventana main.
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // Cierra la aplicación
             Platform.exit();
         }
     }
-    //Se cierra la ventana con el método close() y se inicia la ventana del Sign In.
 
+    //Se cierra la ventana y se inicia la ventana del Sign In.
+    /**
+     * Handles the log-out action.
+     * Displays a confirmation dialog before logging out and loading the sign-in window.
+     * 
+     * @param event the action event.
+     */
     private void handleLogOut(ActionEvent event) {
         //Pedir confirmación al usuario de si desea salir.
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -133,7 +163,7 @@ public class MainWindowController {
         alert.setHeaderText("You are about to log out.");
         alert.setContentText("Are you sure you want to log out?");
 
-        // Mostrar el cuadro de diálogo y esperar la respuesta del usuario
+        //Si confirma que desea salir, se cierra sesión. Si no confirma se mantiene la ventana main.
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
@@ -144,16 +174,12 @@ public class MainWindowController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
 
-                // Obtener el controlador de SignIn y configurar la nueva ventana
                 SignInController signInController = loader.getController();
 
-                // Crear una nueva instancia del Stage para el Sign In
                 Stage signInStage = new Stage();
 
-                // Asignar el nuevo Stage al controlador
                 signInController.setStage(signInStage);
 
-                // Inicializar la ventana de Sign In
                 signInController.initStage(root);
 
             } catch (IOException e) {
