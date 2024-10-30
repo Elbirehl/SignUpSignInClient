@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
    <children>
       <ImageView fitHeight="346.0" fitWidth="681.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -277,18 +277,20 @@
                <padding>
                   <Insets left="160.0" />
                </padding>
+               <children>
+                  <Label prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="hypSignUp" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </children>
             </HBox>
          </children>
       </VBox>
-      <Label layoutX="590.0" layoutY="510.0" prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Hyperlink fx:id="hypSignUp" layoutX="814.0" layoutY="518.0" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Hyperlink>
    </children>
 </AnchorPane>

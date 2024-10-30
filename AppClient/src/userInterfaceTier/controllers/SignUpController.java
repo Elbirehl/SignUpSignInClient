@@ -389,6 +389,8 @@ public class SignUpController {
         int zip = 0, mobile = 0;
         boolean active;
 
+        boolean focused = false;
+
         try {
             //Validar que todos los campos estén diligenciados
             TextEmptyException.checkFields(tfFullName, tfEmail, pfHiddenPassword, pfHiddenConfirmPassword,
@@ -400,6 +402,10 @@ public class SignUpController {
             } catch (PatternFullNameIncorrectException e) {
                 //Si contiene números mostrar en “labelErrorFullName”, exeption “PatternFullNameIncorrectException”.
                 labelErrorFullName.setText(e.getMessage());
+                if (!focused) {
+                    tfFullName.requestFocus();
+                    focused = true;
+                }
             }
             try {
                 //Validar que en el campo "tfEmail" se cumpla con el formato correcto del email introducido y con un maximo de 320 caracteres.
@@ -408,20 +414,35 @@ public class SignUpController {
             } catch (PatternEmailIncorrectException e) {
                 //Sino, mostrar en “labelErrorEmail”, exeption “PatternEmailncorrectException”.
                 labelErrorEmail.setText(e.getMessage());
+                if (!focused) {
+                    tfEmail.requestFocus();
+                    focused = true;
+                }
             }
             try {
-                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
+                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword); 
+                try {
+                    //Validar que el contenido de “pfHiddenConfirmPassword” sea igual al contenido almacenado en “pfHiddenPassword”.
+                    PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
+                    password = pfHiddenPassword.getText();
+                } catch (PasswdsDontMatchException e) {
+                    //Si no cumple mostrar en “labelErrorConfirmPasswd”, exeption “PasswdsDontMatchException”
+                    labelErrorConfirmPasswd.setText(e.getMessage());
+                    if (!focused) {
+                        pfHiddenPassword.requestFocus();
+                        focused = true;
+                    }
+                }
             } catch (PatternPasswordIncorrectException e) {
                 labelErrorPasswd.setText(e.getMessage());
+                if (!focused) {
+                    tfShowPassword.requestFocus();
+                    focused = true;
+                }
             }
-            try {
-                //Validar que el contenido de “pfHiddenConfirmPassword” sea igual al contenido almacenado en “pfHiddenPassword”.
-                PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
-                password = pfHiddenPassword.getText();
-            } catch (PasswdsDontMatchException e) {
-                //Si no cumple mostrar en “labelErrorConfirmPasswd”, exeption “PasswdsDontMatchException”
-                labelErrorConfirmPasswd.setText(e.getMessage());
-            }
+            
+            
+
             try {
                 //Validar que "pfStreet" no tenga mas de 255 carácteres.
                 MaxStreetCharacterException.validateStreetLength(tfStreet);
@@ -429,6 +450,10 @@ public class SignUpController {
             } catch (MaxStreetCharacterException e) {
                 //Sino, mostrar en “labelErrorStreet”, exception “MaxStreetCharacterException”.
                 labelErrorStreet.setText(e.getMessage());
+                if (!focused) {
+                    tfStreet.requestFocus();
+                    focused = true;
+                }
             }
             try {
                 //Validar que "tfZip" no tenga letras y que tenga un máximo de 5 números.
@@ -437,6 +462,10 @@ public class SignUpController {
             } catch (PatternZipIncorrectException e) {
                 //Sino, mostrar en “labelErrorZip”, exception “PatternZipIncorrectException”.
                 labelErrorZip.setText(e.getMessage());
+                if (!focused) {
+                    tfZip.requestFocus();
+                    focused = true;
+                }
             }
 
             try {
@@ -446,6 +475,10 @@ public class SignUpController {
             } catch (MaxCityCharacterException e) {
                 //Si excede mostrar en “labelErrorCity” exception “MaxCityCharacterException”.
                 labelErrorCity.setText(e.getMessage());
+                if (!focused) {
+                    tfCity.requestFocus();
+                    focused = true;
+                }
             }
 
             try {
@@ -455,6 +488,10 @@ public class SignUpController {
             } catch (PatternMobileIncorrectException e) {
                 //Sino mostrar en “labelErrorMobile” exception “PatternMobileIncorrectException”.
                 labelErrorMobile.setText(e.getMessage());
+                if (!focused) {
+                    tfMobile.requestFocus();
+                    focused = true;
+                }
             }
             //Si se selecciona, el usuario se considerará activo.
             // Si no se selecciona, el usuario se considerará inactivo.
@@ -572,6 +609,7 @@ public class SignUpController {
         labelErrorCity.setText("");
         labelErrorMobile.setText("");
         labelErrorEmpty.setText("");
+        labelErrorPasswd.setText("");
     }
 
     /**

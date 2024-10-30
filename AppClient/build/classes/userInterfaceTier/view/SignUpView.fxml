@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
    <children>
       <ImageView fitHeight="346.0" fitWidth="681.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -105,6 +105,7 @@
                         </ToggleButton>
                      </children>
                   </HBox>
+                  <Label fx:id="labelErrorPasswd" prefHeight="22.0" prefWidth="362.0" textFill="#fff600" />
                </children>
                <padding>
                   <Insets bottom="5.0" />
@@ -180,13 +181,10 @@
                               <Insets right="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="labelErrorZip" prefHeight="18.0" prefWidth="169.0" textFill="#fff600" wrapText="true">
+                        <Label fx:id="labelErrorZip" prefHeight="23.0" prefWidth="162.0" textFill="#fff600" wrapText="true">
                            <VBox.margin>
                               <Insets left="221.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="20.0" />
-                           </padding></Label>
+                           </VBox.margin></Label>
                      </children>
                   </VBox>
                   <VBox prefHeight="42.0" prefWidth="196.0">
@@ -232,10 +230,7 @@
                               <TextField fx:id="tfMobile" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="158.0" />
                            </children>
                         </HBox>
-                        <Label fx:id="labelErrorMobile" prefHeight="38.0" prefWidth="158.0" textFill="#fff600" wrapText="true">
-                           <padding>
-                              <Insets bottom="20.0" />
-                           </padding></Label>
+                        <Label fx:id="labelErrorMobile" prefHeight="38.0" prefWidth="158.0" textFill="#fff600" wrapText="true" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="277.0">
@@ -282,18 +277,20 @@
                <padding>
                   <Insets left="160.0" />
                </padding>
+               <children>
+                  <Label prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink fx:id="hypSignUp" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </children>
             </HBox>
          </children>
       </VBox>
-      <Label layoutX="58.0" layoutY="449.0" prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Hyperlink fx:id="hypSignUp" layoutX="290.0" layoutY="457.0" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Hyperlink>
    </children>
 </AnchorPane>

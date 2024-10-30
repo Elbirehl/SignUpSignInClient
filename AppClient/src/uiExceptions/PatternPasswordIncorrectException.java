@@ -40,7 +40,8 @@ public class PatternPasswordIncorrectException extends Exception {
      */
     public static void validatePasswordFormat(TextField tfPassword) throws PatternPasswordIncorrectException {
         String password = tfPassword.getText();
-
+        System.out.println("Ha entrado a validar");
+        
         // Check if password has at least 8 characters
         if (password.length() < 8) {
             throw new PatternPasswordIncorrectException("Password must be at least 8 characters long");
