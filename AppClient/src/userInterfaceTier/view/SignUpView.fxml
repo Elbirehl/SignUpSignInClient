@@ -18,7 +18,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
    <children>
-      <ImageView fitHeight="383.0" fitWidth="882.0" layoutX="14.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="346.0" fitWidth="681.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/images/backgroundSignUp.png" />
          </image>
@@ -37,7 +37,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="tfFullName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" />
+                        <TextField fx:id="tfFullName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="360.0" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -64,7 +64,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="tfEmail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" />
+                        <TextField fx:id="tfEmail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="360.0" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -91,7 +91,7 @@
                         <StackPane prefHeight="59.0" prefWidth="406.0">
                            <children>
                               <TextField fx:id="tfShowPassword" prefHeight="25.0" prefWidth="330.0" />
-                              <PasswordField fx:id="pfHiddenPassword" accessibleRole="PASSWORD_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="318.0" />
+                              <PasswordField fx:id="pfHiddenPassword" accessibleRole="PASSWORD_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="318.0" />
                            </children>
                         </StackPane>
                         <ToggleButton fx:id="tgbEyePasswd" mnemonicParsing="false" prefHeight="14.0" prefWidth="26.0">
@@ -105,6 +105,7 @@
                         </ToggleButton>
                      </children>
                   </HBox>
+                  <Label fx:id="labelErrorPasswd" prefHeight="22.0" prefWidth="362.0" textFill="#fff600" />
                </children>
                <padding>
                   <Insets bottom="5.0" />
@@ -125,7 +126,7 @@
                         <StackPane prefHeight="37.0" prefWidth="320.0">
                            <children>
                               <TextField fx:id="tfShowConfirmPassword" prefHeight="25.0" prefWidth="330.0" />
-                              <PasswordField fx:id="pfHiddenConfirmPassword" accessibleRole="PASSWORD_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="318.0" />
+                              <PasswordField fx:id="pfHiddenConfirmPassword" accessibleRole="PASSWORD_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="318.0" />
                            </children>
                         </StackPane>
                         <ToggleButton fx:id="tgbEyeConfirmPasswd" mnemonicParsing="false" prefHeight="17.0" prefWidth="24.0">
@@ -154,7 +155,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="tfStreet" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" />
+                        <TextField fx:id="tfStreet" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="360.0" />
                      </children>
                   </HBox>
                   <Label fx:id="labelErrorStreet" prefHeight="18.0" prefWidth="362.0" textFill="#fff600" />
@@ -180,7 +181,7 @@
                               <Insets right="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="labelErrorZip" prefHeight="18.0" prefWidth="169.0" textFill="#fff600">
+                        <Label fx:id="labelErrorZip" prefHeight="23.0" prefWidth="162.0" textFill="#fff600" wrapText="true">
                            <VBox.margin>
                               <Insets left="221.0" />
                            </VBox.margin></Label>
@@ -204,9 +205,9 @@
                               <TextField fx:id="tfCity" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="158.0" />
                            </children>
                         </HBox>
-                        <Label fx:id="labelErrorCity" prefHeight="18.0" prefWidth="141.0" textFill="#fff600">
+                        <Label fx:id="labelErrorCity" prefHeight="38.0" prefWidth="153.0" textFill="#fff600" wrapText="true">
                            <VBox.margin>
-                              <Insets left="65.0" />
+                              <Insets left="35.0" />
                            </VBox.margin></Label>
                      </children>
                   </VBox>
@@ -218,7 +219,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="354.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="222.0" text="Phone" textFill="WHITE">
+                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="222.0" text="MOBILE" textFill="WHITE">
                                  <font>
                                     <Font name="Algerian" size="16.0" />
                                  </font>
@@ -229,7 +230,7 @@
                               <TextField fx:id="tfMobile" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="158.0" />
                            </children>
                         </HBox>
-                        <Label fx:id="labelErrorMobile" prefHeight="18.0" prefWidth="143.0" textFill="#fff600" />
+                        <Label fx:id="labelErrorMobile" prefHeight="38.0" prefWidth="158.0" textFill="#fff600" wrapText="true" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="277.0">
@@ -238,11 +239,17 @@
                            <font>
                               <Font name="Algerian" size="16.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets bottom="25.0" />
+                           </HBox.margin>
                         </Label>
                         <CheckBox fx:id="cbxStatus" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="41.0" prefWidth="38.0" style="-fx-background-color: white; -fx-background-radius: 2;">
                            <padding>
                               <Insets bottom="15.0" left="8.0" />
                            </padding>
+                           <HBox.margin>
+                              <Insets bottom="25.0" />
+                           </HBox.margin>
                         </CheckBox>
                      </children>
                   </HBox>
@@ -264,21 +271,6 @@
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="15.0" prefWidth="578.0">
-               <children>
-                  <Label prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="45.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Hyperlink fx:id="hypSignUp" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Hyperlink>
-               </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -288,5 +280,15 @@
             </HBox>
          </children>
       </VBox>
+      <Label layoutX="590.0" layoutY="510.0" prefHeight="60.0" prefWidth="224.0" text="Do you already have an account?" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="hypSignUp" layoutX="814.0" layoutY="518.0" prefHeight="43.0" prefWidth="56.0" text="Sign In" textAlignment="CENTER" textFill="#fbff00" underline="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Hyperlink>
    </children>
 </AnchorPane>

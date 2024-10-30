@@ -17,12 +17,12 @@
             <Image url="@../../resources/images/fondo.png" />
          </image>
       </ImageView>
-      <TitledPane fx:id="tpMenu" animated="false" expanded="false" layoutX="74.0" layoutY="20.0" prefHeight="98.0" prefWidth="69.0" text="Menu">
+      <TitledPane fx:id="tpMenu" animated="false" expanded="false" layoutX="74.0" layoutY="20.0" prefHeight="98.0" prefWidth="90.0" text="Menu">
         <content>
           <AnchorPane fx:id="anchorPane2" minHeight="0.0" minWidth="0.0" prefHeight="69.0" prefWidth="94.0">
                <children>
-                  <Button fx:id="btnLogOut" layoutY="-2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="69.0" style="-fx-background-color: #ffb951;" text="Log Out" />
-                  <Button fx:id="btnExit" layoutY="37.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: #ffb951;" text="Exit" />
+                  <Button fx:id="btnLogOut" layoutY="-2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" style="-fx-background-color: #ffb951;" text="Log Out" />
+                  <Button fx:id="btnExit" layoutY="37.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #ffb951;" text="Exit" />
                </children>
             </AnchorPane>
         </content>

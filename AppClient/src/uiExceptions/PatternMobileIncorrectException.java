@@ -33,7 +33,7 @@ public class PatternMobileIncorrectException extends Exception {
     public static void validateMobileFormat(TextField tfMobile) throws PatternMobileIncorrectException {
         if (!tfMobile.getText().matches("\\d{9}$")) {
             // Throw exception if the mobile number is not 9 digits
-            throw new PatternMobileIncorrectException("Phone number must have 9 numeric digits");
+            throw new PatternMobileIncorrectException("Mobile must have 9 numeric digits");
         }
     }
 }

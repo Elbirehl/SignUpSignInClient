@@ -8,13 +8,10 @@
 package userInterfaceTier.controllers;
 
 import clientBusinessLogic.ClientFactory;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -49,6 +46,7 @@ import uiExceptions.PasswdsDontMatchException;
 import uiExceptions.PatternEmailIncorrectException;
 import uiExceptions.PatternFullNameIncorrectException;
 import uiExceptions.PatternMobileIncorrectException;
+import uiExceptions.PatternPasswordIncorrectException;
 import uiExceptions.PatternZipIncorrectException;
 import uiExceptions.TextEmptyException;
 
@@ -173,6 +171,12 @@ public class SignUpController {
     private Label labelErrorEmail;
 
     /**
+     * Label for displaying validation errors for the format of the password.
+     */
+    @FXML
+    private Label labelErrorPasswd;
+
+    /**
      * Label for displaying validation errors for the password confirmation.
      */
     @FXML
@@ -236,8 +240,6 @@ public class SignUpController {
      *
      * @param root The root node to be used for creating the scene of the
      * window.
-     *
-     * @authors Meylin, Elbire
      */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
@@ -303,8 +305,6 @@ public class SignUpController {
      * method).
      * @param newValue The new value of the observable (not used in this
      * method).
-     *
-     * @authors Meylin, Elbire
      */
     public void passwrdIsVisible(ObservableValue observable, String oldValue, String newValue) {
 
@@ -333,8 +333,6 @@ public class SignUpController {
      * hiding the password are selected.
      *
      * @param event The action event triggered by the toggle button.
-     *
-     * @authors Meylin, Elbire
      */
     @FXML
     private void handelEyeIconToggleButtonAction(ActionEvent event) {
@@ -379,8 +377,6 @@ public class SignUpController {
      * Handles the sign-up action when the user clicks the "Sign Up" button.
      *
      * @param event The action event triggered by the button click.
-     *
-     * @authors Elbire, Meylin
      */
     @FXML
     private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException {
@@ -412,6 +408,11 @@ public class SignUpController {
             } catch (PatternEmailIncorrectException e) {
                 //Sino, mostrar en “labelErrorEmail”, exeption “PatternEmailncorrectException”.
                 labelErrorEmail.setText(e.getMessage());
+            }
+            try {
+                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
+            } catch (PatternPasswordIncorrectException e) {
+                labelErrorPasswd.setText(e.getMessage());
             }
             try {
                 //Validar que el contenido de “pfHiddenConfirmPassword” sea igual al contenido almacenado en “pfHiddenPassword”.
@@ -461,31 +462,33 @@ public class SignUpController {
             /*Una vez que todas las validaciones están realizadas,
              *carga los datos de los campos en un objeto User.
              */
-            newUser = new User(email, password, name, street, mobile, city, zip, active);
-            /*Se llama a la factoría “ClientFactory” para conseguir una
+            if (!(email == null || password == null || name == null || street == null || mobile == 0 || city == null || zip == 0)) {
+                newUser = new User(email, password, name, street, mobile, city, zip, active);
+                /*Se llama a la factoría “ClientFactory” para conseguir una
              *implementación de la interfaz “Signable”
-             */
-            signable = ClientFactory.getSignable();
-            try {
-                //y se llama al método signUp  pasándole el objeto User.
-                newUserValidate = signable.signUp(newUser);
-                if (newUserValidate != null) {
-                    //Mostrar un Alert de tipo INFORMATION con un mensaje "Registro exitoso".
-                    new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered.", ButtonType.OK).showAndWait();
-                    //Después de aceptar el mensaje, se cierra la ventana
-                    //de SignUp y se devuelve el control a la ventana SignIn.
-                    stage.close();
+                 */
+                signable = ClientFactory.getSignable();
+                try {
+                    //y se llama al método signUp  pasándole el objeto User.
+                    newUserValidate = signable.signUp(newUser);
+                    if (newUserValidate != null) {
+                        //Mostrar un Alert de tipo INFORMATION con un mensaje "Registro exitoso".
+                        new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered.", ButtonType.OK).showAndWait();
+                        //Después de aceptar el mensaje, se cierra la ventana
+                        //de SignUp y se devuelve el control a la ventana SignIn.
+                        stage.close();
+                    }
+                } catch (ServerErrorException e) {
+                    //metenr los errores que nos mande el servidor, que aun no los tengo.
+                    new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
+                    logger.severe(e.getLocalizedMessage());
+                } catch (UserExistErrorException e) {
+                    new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
+                    logger.severe(e.getLocalizedMessage());
+                } catch (MaxThreadsErrorException e) {
+                    new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
+                    logger.severe(e.getLocalizedMessage());
                 }
-            } catch (ServerErrorException e) {
-                //metenr los errores que nos mande el servidor, que aun no los tengo.
-                new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
-                logger.severe(e.getLocalizedMessage());
-            } catch (UserExistErrorException e) {
-                new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
-                logger.severe(e.getLocalizedMessage());
-            } catch (MaxThreadsErrorException e) {
-                new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
-                logger.severe(e.getLocalizedMessage());
             }
         } catch (TextEmptyException e) {
             //Si todos los campos no están diligenciados lazar la  exception “TextEmptyException” en “labelErrorEmpty”.
@@ -500,8 +503,6 @@ public class SignUpController {
      * If an error occurs during the loading process, it logs the exception.
      *
      * @param event The action event triggered by the hyperlink click.
-     *
-     * @author Elbire
      */
     @FXML
     private void handleHyperLinkSignIn(ActionEvent event) {
@@ -512,9 +513,7 @@ public class SignUpController {
      * Sets tooltips for the input fields in the SignUp form.
      *
      * Each tooltip provides a hint to the user about what to enter in the
-     * corresponding field.</p>
-     *
-     * @author Elbire
+     * corresponding field.
      */
     private void setTooltips() {
         Tooltip tooltipFN = new Tooltip("Enter your full name");
@@ -541,7 +540,7 @@ public class SignUpController {
      * This method configures the prompt text that appears in each input field,
      * providing users with a hint about the expected input.
      *
-     * @author Meylin
+     *
      */
     private void setPromptText() {
         tfFullName.setPromptText("Enter your full name");
@@ -563,8 +562,6 @@ public class SignUpController {
      * This method resets the text of all error label components to an empty
      * string, effectively removing any error messages that may have been
      * displayed to the user.
-     *
-     * @author Elbire
      */
     private void clearErrorLabels() {
         labelErrorFullName.setText("");
@@ -583,8 +580,6 @@ public class SignUpController {
      * This method resets the values of all form fields to their default state.
      * Specifically, it clears the text from the following input fields and sets
      * the status checkbox to unchecked
-     *
-     * @author Elbire
      */
     private void clearForm() {
         tfFullName.clear();
@@ -607,8 +602,6 @@ public class SignUpController {
      * Each menu item has an associated action handler that executes when the
      * item is selected. The context menu is displayed when the user
      * right-clicks anywhere in the SignUp window.
-     *
-     * @authors Meylin, Elbire
      */
     private void setUpContextMenu() {
         contextMenu = new ContextMenu();
@@ -635,7 +628,6 @@ public class SignUpController {
      * cursor. If any other mouse button is clicked, the context menu is hidden.
      *
      * @param event The mouse event that triggered this method.
-     * @authors Meylin, Elbire
      */
     private void showContextMenu(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) {
@@ -653,7 +645,6 @@ public class SignUpController {
      * be displayed to the user.
      *
      * @param event The action event that triggered this method.
-     * @authors Meylin, Elbire
      */
     private void handleResetForm(ActionEvent event) {
         //Todos los campos del formulario se restablecen a sus valores predeterminados (vacíos).
@@ -669,7 +660,7 @@ public class SignUpController {
      * tips on creating a secure password.
      *
      * @param event The action event that triggered this method.
-     * @authors Meylin, Elbire
+     *
      */
     private void handleHelp(ActionEvent event) {
         //Se muestra un cuadro de diálogo (Alert) con errores comunes y recomendaciones de seguridad para crear la cuenta.
@@ -691,7 +682,6 @@ public class SignUpController {
      * details about the application.
      *
      * @param event The action event that triggered this method.
-     * @authors Meylin, Elbire
      */
     private void handleAboutApp(ActionEvent event) {
         //Se muestra un cuadro de diálogo (Alert) con información sobre la aplicación: nombre, versión, autoras, y propósito de la app.
@@ -718,7 +708,7 @@ public class SignUpController {
      * dialog to ask the user if they really want to exit the application
      *
      * @param event The window event that triggered this method.
-     * @authors Meylin
+     *
      */
     private void handleCloseRequest(WindowEvent event) {
         event.consume();
@@ -728,8 +718,6 @@ public class SignUpController {
     /**
      * Displays a confirmation dialog asking the user if they are sure they want
      * to exit the application.
-     *
-     * @authors Meylin
      */
     private void showExitConfirmation() {
         //Mostrar un Alert de tipo CONFIRMATION con el mensaje: "¿Estás seguro de que deseas salir?".
@@ -747,7 +735,7 @@ public class SignUpController {
      *
      *
      * @param response The user's response to the exit confirmation dialog.
-     * @authors Meylin
+     *
      */
     public void handleCloseConfirmation(ButtonType response) {
         if (response == ButtonType.OK) {
