@@ -110,9 +110,9 @@ public class MainWindowController {
     public void initStage(Parent root, User userSignedIn) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        //Nombre de la ventana "MainWindow".
+        //Window title set to "MainWindow".
         stage.setTitle("MainWindow");
-        //Añadir un icono personalizado.
+        //Adding a custom icon.
         Image icon = new Image(getClass().getResourceAsStream("/resources/images/catrina.png"));
         stage.getIcons().add(icon);
         stage.setResizable(false);
@@ -126,8 +126,8 @@ public class MainWindowController {
         stage.show();
     }
 
-    //Los datos del usuario (nickname, email, mobile y estado del usuario) se cargan y se muestran en TextFields individuales dentro de la ventana.
-    //Se cierra la ventana y se cierra la aplicación.
+    //The user's data (nickname, email, mobile, and user status) are loaded and displayed in individual TextFields within the window.
+    //Closes the window and exits the application.
      /**
      * Handles the action to exit the application.
      * Displays a confirmation dialog before exiting the application.
@@ -135,21 +135,21 @@ public class MainWindowController {
      * @param event the action event.
      */
     private void handleExit(ActionEvent event) {
-        //Pedir confirmación al usuario de si desea salir.
+        //Request user confirmation to exit.
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm Exit");
         alert.setHeaderText("You are about to exit the application.");
         alert.setContentText("Are you sure you want to exit?");
 
-        //Si confirma que desea salir, se cierra sesión. Si no confirma se mantiene la ventana main.
+        //If the user confirms, the session is closed. If not, the main window remains open.
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Cierra la aplicación
+            // Closes the application
             Platform.exit();
         }
     }
 
-    //Se cierra la ventana y se inicia la ventana del Sign In.
+    //Closes the window and starts the Sign In window.
     /**
      * Handles the log-out action.
      * Displays a confirmation dialog before logging out and loading the sign-in window.
@@ -157,20 +157,20 @@ public class MainWindowController {
      * @param event the action event.
      */
     private void handleLogOut(ActionEvent event) {
-        //Pedir confirmación al usuario de si desea salir.
+        //Request user confirmation to log out.
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm Log Out");
         alert.setHeaderText("You are about to log out.");
         alert.setContentText("Are you sure you want to log out?");
 
-        //Si confirma que desea salir, se cierra sesión. Si no confirma se mantiene la ventana main.
+        //If the user confirms, the session is closed. If not, the main window remains open.
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Cerrar la ventana actual (Main Window)
+                // Close the current window (Main Window)
                 stage.close();
 
-                // Cargar la ventana de Sign In
+                // Load the Sign In window
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
 

@@ -16,7 +16,7 @@ import logicalModel.model.User;
  * Processes server responses and handles exceptions for specific error cases.
  * 
  * @author 
- * Olaia, Meylin, Elbire, and Irati
+ * Olaia, Meylin, Elbire and Irati
  */
 public class Client implements Signable {
 

@@ -108,20 +108,20 @@ public class SignInController {
             logger.info("Initializizng Sign In stage");
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            //El nombre de la ventana es “Sign In”.
+            // The window title is "Sign In".
             stage.setTitle("Sign In");
-            //Ventana no redimensionable.
+            // The window is not resizable.
             stage.setResizable(false);
             Image icon = new Image(getClass().getResourceAsStream("/resources/images/catrina.png"));
             stage.getIcons().add(icon);
-            //Se enfoca el campo Email dado que es el primer campo que el usuario deberá rellenar
+            // Focuses on the Email field as it is the first field the user needs to fill in
             emailText.isFocused();
-            //El icono del ToggleButton será el ojo que muestre la contraseña.
+            // The icon for the ToggleButton will be the eye that shows the password.
             ivEyeIcon.setImage(new Image("/resources/images/ShowPasswd.png"));
             lblError.setText("");
             btnAccept.setDefaultButton(true);
-            //El usuario ingresa la contraseña en el pfPassword. 
-            tfPasswrd.setVisible(false); // Al inicio no es visible
+            // The user enters the password in pfPassword.
+            tfPasswrd.setVisible(false); // Initially not visible
 
             pfPasswrd.textProperty().addListener(this::textPropertyChange);
             tfPasswrd.textProperty().addListener(this::textPropertyChange);
@@ -145,10 +145,10 @@ public class SignInController {
      * @param newValue the new value of the password field.
      */
     public void textPropertyChange(ObservableValue observable, String oldValue, String newValue) {
-        //La contraseña ingresada en el campo pfPasswrd se replica en el campo de texto tfPasswrd.
+        // The password entered in the pfPasswrd field is mirrored in the tfPasswrd text field.
         if (pfPasswrd.isVisible()) {
             tfPasswrd.setText(pfPasswrd.getText());
-        //Si el campo que esta visible es el tfPasswrd entonces la contraseña se replicará en el campo pfPasswrd.
+        // If the visible field is tfPasswrd, then the password is mirrored in the pfPasswrd field.
         } else if (tfPasswrd.isVisible()) {
             pfPasswrd.setText(tfPasswrd.getText());
         }
@@ -162,14 +162,14 @@ public class SignInController {
     @FXML
     public void handelEyeIconToggleButtonAction(ActionEvent event) {
         if (tgbtnEyeIcon.isSelected()) {
-            pfPasswrd.setVisible(false); // Ocultar el PasswordField
-            tfPasswrd.setVisible(true);  // Mostrar el TextField (contraseña visible)
-            // Cambiar el icono al de "contraseña visible"
+            pfPasswrd.setVisible(false); // Hide the PasswordField
+            tfPasswrd.setVisible(true);  // Show the TextField (password visible)
+            // Change icon to "password visible"
             ivEyeIcon.setImage(new Image("/resources/images/HidePasswd.png"));
         } else {
-            tfPasswrd.setVisible(false); // Mostrar el PasswordField
-            pfPasswrd.setVisible(true);  // Ocultar el TextField (contraseña visible)
-            // Cambiar el icono al de "contraseña oculta"
+            tfPasswrd.setVisible(false); // Show the PasswordField
+            pfPasswrd.setVisible(true);  //Hide the TextField (password visible)
+            // Change icon to "password hidden"
             ivEyeIcon.setImage(new Image("/resources/images/ShowPasswd.png"));
         }
     }
@@ -191,15 +191,15 @@ public class SignInController {
 
         
         try {
-            // se valida que los campos email y contraseña estén rellenados, en caso contrario se informa al usuario de que debe rellenarlos para poder continuar mediante la excepción: “TextEmptyException”.
+            // Validates that the email and password fields are filled in; otherwise, informs the user to complete them in order to continue through the exception: "TextEmptyException".
             TextEmptyException.validateNotEmpty(email, passwrd);
-            // se valida que el email introducido tiene el formato válido, en caso contrario se informa al usuario mediante la excepción propia: “WrongEmailFormatException”. 
+            // Validates that the entered email has a valid format; otherwise, informs the user through the custom exception: "WrongEmailFormatException".
             WrongEmailFormatException.validateEmail(email);
 
             User user = new User(email, passwrd);
-            //comprobar que existe + implementar excepciones
+            // Check if the user exists + implement exceptions
             User userSignedIn = ClientFactory.getSignable().signIn(user); 
-            // Si los datos son correctos y el usuario se encuentra activo, se abrirá la ventana “MainWindowView” pasandole el user.
+            // If the data is correct and the user is active, the "MainWindowView" window will open, passing in the user.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/MainWindowView.fxml"));
             Parent root = (Parent) loader.load();
             MainWindowController controller = ((MainWindowController) loader.getController());
@@ -236,7 +236,7 @@ public class SignInController {
     @FXML
     private void handelSignUpHyperlink(ActionEvent event) {
         try {
-            //Abrir ventana SignUp
+            // Open SignUp window
             emailText.setText("");
             tfPasswrd.setText("");
             pfPasswrd.setText("");
