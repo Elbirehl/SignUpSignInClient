@@ -55,7 +55,7 @@ public class MainWindowControllerTest extends ApplicationTest {
         clickOn("#emailText");
         write("elbire@gmail.com");
         clickOn("#pfPasswrd");
-        write("abcd*1234");
+        write("AbcD*1234");
 
         verifyThat("#AnchorPane", isVisible());
 

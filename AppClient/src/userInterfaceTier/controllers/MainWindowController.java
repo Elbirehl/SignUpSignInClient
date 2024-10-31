@@ -5,7 +5,6 @@
  */
 package userInterfaceTier.controllers;
 
-import clientBusinessLogic.ClientFactory;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -39,7 +38,7 @@ import logicalModel.model.User;
 public class MainWindowController {
 
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane signUpView;
 
     @FXML
     private TitledPane tpMenu;
