@@ -9,43 +9,21 @@ import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
-/**
- * Test class for the SignUp view and its controller.
- *
- * This class uses the TestFX framework to verify the behavior of the SignUp
- * view. Tests include checking responses to successful registration, server
- * errors, existing user errors, and max threads error.
- *
- * TestFX framework allows GUI testing of JavaFX applications by simulating user
- * actions and verifying results in the GUI.
- *
- * @author Elbire, Meylin
- */
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignUpControllerTest extends ApplicationTest {
 
-    /**
-     * Initializes the JavaFX application and starts the ClientApplication.
-     *
-     * @param stage the primary stage for this application
-     * @throws Exception if any error occurs while starting the application
-     */
+    
     @Override
     public void start(Stage stage) throws Exception {
         new ClientApplication().start(stage);
     }
 
-    /**
-     * Constructs an instance of SignUpControllerTest.
-     */
+    
     public SignUpControllerTest() {
     }
 
-    /**
-     * Tests the SignUp view for a successful registration response. Simulates
-     * user actions for entering valid information and submitting the SignUp
-     * form, then verifies that the registration was successful.
-     */
+    
     @Test
     public void test_1_OKResponse() {
         clickOn("#hypSignUp");
@@ -73,11 +51,7 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#AnchorPane", isVisible());
     }
 
-    /**
-     * Tests the SignUp view for an existing user error. Simulates user actions
-     * for submitting the SignUp form with an email that is already registered,
-     * and verifies that an existing user error message is displayed.
-     */
+    
     @Test
     public void test_2_UserExistException() {
         clickOn("#hypSignUp");
@@ -105,11 +79,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("Aceptar");
     }
 
-    /**
-     * Tests the SignUp view for a server error response. Simulates user actions
-     * for submitting the SignUp form and verifies that a server error message
-     * is displayed.
-     */
+    
     @Test
     public void test_3_ServerErrorException() {
         clickOn("#hypSignUp");
