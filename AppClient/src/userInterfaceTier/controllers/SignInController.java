@@ -38,7 +38,7 @@ import uiExceptions.WrongEmailFormatException;
  * This class utilizes JavaFX for the user interface and includes methods
  * to handle button actions, password visibility, and transitions between views.
  * 
- * @author Irati
+ * @author Irati and Olaia
  */
 public class SignInController {
     /**
