@@ -15,15 +15,16 @@ import javafx.stage.Stage;
 import userInterfaceTier.controllers.SignInController;
 
 /**
- * The ClientApplication class is the entry point for the JavaFX application.
- * It initializes the application and sets up the primary stage.
+ * The ClientApplication class is the entry point for the JavaFX application. It
+ * initializes the application and sets up the primary stage.
  *
- * This class extends javafx.application.Application and is responsible for loading the
- * SignInView FXML file and initializing the SignInController.
+ * This class extends javafx.application.Application and is responsible for
+ * loading the SignInView FXML file and initializing the SignInController.
  *
  * @author Irati
  */
 public class ClientApplication extends javafx.application.Application {
+
     /**
      * Default constructor for the ClientApplication class.
      */
@@ -31,10 +32,12 @@ public class ClientApplication extends javafx.application.Application {
     }
 
     /**
-     * The start method is called when the application is launched. It sets up the primary stage
-     * by loading the SignInView FXML file and initializing the SignInController.
+     * The start method is called when the application is launched. It sets up
+     * the primary stage by loading the SignInView FXML file and initializing
+     * the SignInController.
      *
-     * @param stage the primary stage for this application, onto which the application scene can be set.
+     * @param stage the primary stage for this application, onto which the
+     * application scene can be set.
      * @throws IOException if there is an error loading the FXML file.
      */
     @Override
@@ -44,7 +47,7 @@ public class ClientApplication extends javafx.application.Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
 
-            SignInController controller = ((SignInController)loader.getController());
+            SignInController controller = ((SignInController) loader.getController());
 
             controller.setStage(stage);
 
@@ -60,7 +63,6 @@ public class ClientApplication extends javafx.application.Application {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-
         launch(args);
     }
 

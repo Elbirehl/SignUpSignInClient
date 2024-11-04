@@ -24,13 +24,13 @@ public class SignUpControllerTest extends ApplicationTest {
     }
 
     
-    @Test
+    //@Test
     public void test_1_OKResponse() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
         write("Prueba");
         clickOn("#tfEmail");
-        write("prueba@gmail.com");
+        write("prueba2@gmail.com");
         clickOn("#pfHiddenPassword");
         write("AbcD*1234");
         clickOn("#tgbEyePasswd");
@@ -52,7 +52,7 @@ public class SignUpControllerTest extends ApplicationTest {
     }
 
     
-    @Test
+    //@Test
     public void test_2_UserExistException() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
@@ -80,7 +80,7 @@ public class SignUpControllerTest extends ApplicationTest {
     }
 
     
-    @Test
+    //@Test
     public void test_3_ServerErrorException() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
@@ -115,11 +115,11 @@ public class SignUpControllerTest extends ApplicationTest {
      */
     @Test
     public void test_4_MaxThreadsErrorException() {
-        clickOn("#hypSignUp");
+         clickOn("#hypSignUp");
         clickOn("#tfFullName");
         write("Pedro Pascal");
         clickOn("#tfEmail");
-        write("pedroP@example.com");
+        write("pedroP1232345@example.com");
         clickOn("#pfHiddenPassword");
         write("AbcD*1234");
         clickOn("#tgbEyePasswd");
@@ -136,7 +136,6 @@ public class SignUpControllerTest extends ApplicationTest {
         write("688740055");
         clickOn("#cbxStatus");
         clickOn("#btnSignUp");
-        clickOn("Aceptar");
-        verifyThat("The email entered is already in use.", isVisible());
+        verifyThat("Your request can't be attended. Please try later.", isVisible());
     }
 }

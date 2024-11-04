@@ -53,8 +53,8 @@ public class TextEmptyException extends Exception {
      * Validates that the specified field is not empty. If the field is empty,
      * a TextEmptyException is thrown with an appropriate message.
      *
-     * @param field the string to be validated.
-     * @param fieldName the name of the field, used in the exception message.
+     * @param email the string to be validated.
+     * @param passwrd the name of the field, used in the exception message.
      * @throws TextEmptyException if the field is null or empty.
      */
     public static void validateNotEmpty(String email, String passwrd) throws TextEmptyException {
