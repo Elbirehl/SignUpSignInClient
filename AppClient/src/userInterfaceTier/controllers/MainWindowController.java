@@ -27,7 +27,7 @@ import logicalModel.model.User;
  * Controller for the main application window.
  * Manages user interaction with the UI and handles the logic for logging out 
  * and exiting the application.
- * 
+ * hola
  * @author olaia
  */
 public class MainWindowController {
