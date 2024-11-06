@@ -27,8 +27,7 @@ import logicalExceptions.ServerErrorException;
 import logicalExceptions.SignInErrorException;
 import logicalExceptions.UserNotActiveException;
 import logicalModel.model.User;
-import uiExceptions.WrongEmailFormatException;
-
+import uiExceptions.PatternEmailIncorrectException;
 /**
  * The SignInController class manages the sign-in functionality of the application.
  * It handles user input for email and password, validates the input, and manages
@@ -38,7 +37,7 @@ import uiExceptions.WrongEmailFormatException;
  * This class utilizes JavaFX for the user interface and includes methods
  * to handle button actions, password visibility, and transitions between views.
  * 
- * @author Irati
+ * @author Irati and Olaia
  */
 public class SignInController {
     /**
@@ -189,7 +188,7 @@ public class SignInController {
             // Validates that the email and password fields are filled in; otherwise, informs the user to complete them in order to continue through the exception: "TextEmptyException".
             TextEmptyException.validateNotEmpty(email, passwrd);
             // Validates that the entered email has a valid format; otherwise, informs the user through the custom exception: "WrongEmailFormatException".
-            WrongEmailFormatException.validateEmail(email);
+            PatternEmailIncorrectException.validateEmail(this.emailText);
 
             User user = new User(email, passwrd);
             // Check if the user exists + implement exceptions
@@ -200,7 +199,7 @@ public class SignInController {
             MainWindowController controller = ((MainWindowController) loader.getController());
             controller.setStage(stage);
             controller.initStage(root, userSignedIn);
-        } catch (WrongEmailFormatException e) {
+        } catch (PatternEmailIncorrectException e) {
             lblError.setText(e.getMessage());
             logger.severe(e.getLocalizedMessage());
         } catch (TextEmptyException e) {

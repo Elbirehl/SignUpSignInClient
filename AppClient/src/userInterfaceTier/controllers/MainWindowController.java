@@ -27,13 +27,13 @@ import logicalModel.model.User;
  * Controller for the main application window.
  * Manages user interaction with the UI and handles the logic for logging out 
  * and exiting the application.
- * hola
- * @author olaia
+ * 
+ * @author Olaia and Irati
  */
 public class MainWindowController {
 
     @FXML
-    private AnchorPane signUpView;
+    private AnchorPane mainWindow;
 
     @FXML
     private TitledPane tpMenu;
