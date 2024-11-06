@@ -60,7 +60,7 @@ public class SignUpController {
      * AnchorPane for the layout of the SignUp view.
      */
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane signUpView;
 
     /**
      * ContextMenu that provides options when right-clicking in the SignUp view.
@@ -676,7 +676,7 @@ public class SignUpController {
         helpItem.setOnAction(this::handleHelp);
         aboutAppItem.setOnAction(this::handleAboutApp);
         // Associate the Context Menu with the entire window
-        anchorPane.setOnMouseClicked(this::showContextMenu);
+        signUpView.setOnMouseClicked(this::showContextMenu);
     }
 
     /**
@@ -690,7 +690,7 @@ public class SignUpController {
      */
     private void showContextMenu(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) {
-            contextMenu.show(anchorPane, event.getScreenX(), event.getScreenY());
+            contextMenu.show(signUpView, event.getScreenX(), event.getScreenY());
         } else {
             contextMenu.hide();
         }
