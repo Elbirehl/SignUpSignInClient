@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -60,7 +61,7 @@ public class SignUpController {
      * AnchorPane for the layout of the SignUp view.
      */
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane signUpView;
 
     /**
      * ContextMenu that provides options when right-clicking in the SignUp view.
@@ -408,9 +409,10 @@ public class SignUpController {
                 // Validate that the "tfFullName" field does not contain any numbers.
                 PatternFullNameIncorrectException.validateFullName(tfFullName);
                 name = tfFullName.getText();
+                clearErrorStyle(tfFullName, labelErrorFullName);
             } catch (PatternFullNameIncorrectException e) {
                 // If it contains numbers, show "PatternFullNameIncorrectException" in labelErrorFullName.
-                labelErrorFullName.setText(e.getMessage());
+                setErrorStyle(tfFullName, labelErrorFullName, e.getMessage());
                 if (!focused) {
                     tfFullName.requestFocus();
                     focused = true;
@@ -421,9 +423,10 @@ public class SignUpController {
                 // Validate that the "tfEmail" field follows correct email format and has a maximum of 320 characters.
                 PatternEmailIncorrectException.validateEmail(tfEmail);
                 email = tfEmail.getText();
+                clearErrorStyle(tfEmail, labelErrorEmail);
             } catch (PatternEmailIncorrectException e) {
                 // If invalid, show "PatternEmailIncorrectException" in labelErrorEmail.
-                labelErrorEmail.setText(e.getMessage());
+                setErrorStyle(tfEmail, labelErrorEmail, e.getMessage());
                 if (!focused) {
                     tfEmail.requestFocus();
                     focused = true;
@@ -433,28 +436,46 @@ public class SignUpController {
             try {
                 // Validate that the password format in "tfShowPassword" meets criteria.
                 PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
+                if (tfShowPassword.isVisible()) {
+                    clearErrorStyle(tfShowPassword, labelErrorPasswd);
+                } else {
+                    clearErrorStylePassword(pfHiddenPassword, labelErrorPasswd);
+                }
                 try {
                     // Validate that "pfHiddenConfirmPassword" matches "pfHiddenPassword".
                     PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
                     password = pfHiddenPassword.getText();
+                    if (pfHiddenConfirmPassword.isVisible()) {
+                        clearErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd);
+                    } else {
+                        clearErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd);
+                    }
                 } catch (PasswdsDontMatchException e) {
                     // If not matching, show "PasswdsDontMatchException" in labelErrorConfirmPasswd.
-                    labelErrorConfirmPasswd.setText(e.getMessage());
+                    if (tfShowConfirmPassword.isVisible()) {
+                        setErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
+                    } else {
+                        setErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
+                    }
                     if (!focused) {
                         if (tfShowConfirmPassword.isVisible()) {
-                        tfShowConfirmPassword.requestFocus();
-                    }else{
-                        pfHiddenConfirmPassword.requestFocus();
-                    }
+                            tfShowConfirmPassword.requestFocus();
+                        } else {
+                            pfHiddenConfirmPassword.requestFocus();
+                        }
                         focused = true;
                     }
                 }
             } catch (PatternPasswordIncorrectException e) {
-                labelErrorPasswd.setText(e.getMessage());
+                if (tfShowPassword.isVisible()) {
+                    setErrorStyle(tfShowPassword, labelErrorPasswd, e.getMessage());
+                } else {
+                    setErrorStylePassword(pfHiddenPassword, labelErrorPasswd, e.getMessage());
+                }
                 if (!focused) {
                     if (tfShowPassword.isVisible()) {
                         tfShowPassword.requestFocus();
-                    }else{
+                    } else {
                         pfHiddenPassword.requestFocus();
                     }
                     focused = true;
@@ -465,9 +486,10 @@ public class SignUpController {
                 // Validate that "tfStreet" does not exceed 255 characters.
                 MaxStreetCharacterException.validateStreetLength(tfStreet);
                 street = tfStreet.getText();
+                clearErrorStyle(tfStreet, labelErrorStreet);
             } catch (MaxStreetCharacterException e) {
                 // If exceeded, show "MaxStreetCharacterException" in labelErrorStreet.
-                labelErrorStreet.setText(e.getMessage());
+                setErrorStyle(tfStreet, labelErrorStreet, e.getMessage());
                 if (!focused) {
                     tfStreet.requestFocus();
                     focused = true;
@@ -478,9 +500,10 @@ public class SignUpController {
                 // Validate that "tfZip" contains only digits and is a maximum of 5 numbers.
                 PatternZipIncorrectException.validateZipFormat(tfZip);
                 zip = Integer.parseInt(tfZip.getText());
+                clearErrorStyle(tfZip, labelErrorZip);
             } catch (PatternZipIncorrectException e) {
                 // If invalid, show "PatternZipIncorrectException" in labelErrorZip.
-                labelErrorZip.setText(e.getMessage());
+                setErrorStyle(tfZip, labelErrorZip, e.getMessage());
                 if (!focused) {
                     tfZip.requestFocus();
                     focused = true;
@@ -491,9 +514,10 @@ public class SignUpController {
                 // Validate that "tfCity" does not exceed 58 characters.
                 MaxCityCharacterException.validateCityLength(tfCity);
                 city = tfCity.getText();
+                clearErrorStyle(tfCity, labelErrorCity);
             } catch (MaxCityCharacterException e) {
                 // If exceeded, show "MaxCityCharacterException" in labelErrorCity.
-                labelErrorCity.setText(e.getMessage());
+                setErrorStyle(tfCity, labelErrorCity, e.getMessage());
                 if (!focused) {
                     tfCity.requestFocus();
                     focused = true;
@@ -504,9 +528,10 @@ public class SignUpController {
                 // Validate that "tfMobile" contains only digits and has a maximum of 9 characters.
                 PatternMobileIncorrectException.validateMobileFormat(tfMobile);
                 mobile = Integer.parseInt(tfMobile.getText());
+                clearErrorStyle(tfMobile, labelErrorMobile);
             } catch (PatternMobileIncorrectException e) {
                 // If invalid, show "PatternMobileIncorrectException" in labelErrorMobile.
-                labelErrorMobile.setText(e.getMessage());
+                setErrorStyle(tfMobile, labelErrorMobile, e.getMessage());
                 if (!focused) {
                     tfMobile.requestFocus();
                     focused = true;
@@ -676,7 +701,7 @@ public class SignUpController {
         helpItem.setOnAction(this::handleHelp);
         aboutAppItem.setOnAction(this::handleAboutApp);
         // Associate the Context Menu with the entire window
-        anchorPane.setOnMouseClicked(this::showContextMenu);
+        signUpView.setOnMouseClicked(this::showContextMenu);
     }
 
     /**
@@ -690,7 +715,7 @@ public class SignUpController {
      */
     private void showContextMenu(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) {
-            contextMenu.show(anchorPane, event.getScreenX(), event.getScreenY());
+            contextMenu.show(signUpView, event.getScreenX(), event.getScreenY());
         } else {
             contextMenu.hide();
         }
@@ -799,4 +824,57 @@ public class SignUpController {
             stage.close();
         }
     }
+
+    /**
+     * Sets an error style on the specified TextField and updates the associated
+     * Label with an error message.
+     *
+     * @param textfield the TextField to apply the error style to
+     * @param errorLabel the Label to display the error message
+     * @param message the error message to display
+     */
+    private void setErrorStyle(TextField textfield, Label errorLabel, String message) {
+        textfield.setStyle("-fx-border-color: red;");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setText(message);
+    }
+
+    /**
+     * Sets an error style on the specified PasswordField and updates the
+     * associated Label with an error message.
+     *
+     * @param textfield the PasswordField to apply the error style to
+     * @param errorLabel the Label to display the error message
+     * @param message the error message to display
+     */
+    private void setErrorStylePassword(PasswordField textfield, Label errorLabel, String message) {
+        textfield.setStyle("-fx-border-color: red;");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setText(message);
+    }
+
+    /**
+     * Clears the error style from the specified TextField and removes any error
+     * message from the associated Label.
+     *
+     * @param textfield the TextField to clear the error style from
+     * @param errorLabel the Label to clear the error message from
+     */
+    private void clearErrorStyle(TextField textfield, Label errorLabel) {
+        textfield.setStyle("");
+        errorLabel.setText("");
+    }
+
+    /**
+     * Clears the error style from the specified PasswordField and removes any
+     * error message from the associated Label.
+     *
+     * @param textfield the PasswordField to clear the error style from
+     * @param errorLabel the Label to clear the error message from
+     */
+    private void clearErrorStylePassword(PasswordField textfield, Label errorLabel) {
+        textfield.setStyle("");
+        errorLabel.setText("");
+    }
+
 }

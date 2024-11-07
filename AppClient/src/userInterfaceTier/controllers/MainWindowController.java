@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package userInterfaceTier.controllers;
 
-import clientBusinessLogic.ClientFactory;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -34,18 +28,18 @@ import logicalModel.model.User;
  * Manages user interaction with the UI and handles the logic for logging out 
  * and exiting the application.
  * 
- * @author olaia
+ * @author Olaia and Irati
  */
 public class MainWindowController {
 
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane mainWindow;
 
     @FXML
     private TitledPane tpMenu;
 
     @FXML
-    private AnchorPane anchorPane2;
+    private AnchorPane menu;
 
     @FXML
     private Button btnLogOut;

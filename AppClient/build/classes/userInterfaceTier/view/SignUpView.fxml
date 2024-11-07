@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
+<AnchorPane id="signUpView" fx:id="signUpView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignUpController">
    <children>
       <ImageView fitHeight="346.0" fitWidth="681.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -235,12 +235,12 @@
                   </VBox>
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="277.0">
                      <children>
-                        <Label contentDisplay="BOTTOM" prefHeight="43.0" prefWidth="123.0" text="CHECK IF YOU&#10;ARE ACTIVE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Label contentDisplay="BOTTOM" prefHeight="46.0" prefWidth="145.0" text="CHECK IF YOU&#10;ARE ACTIVE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Algerian" size="16.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="25.0" />
+                              <Insets bottom="20.0" />
                            </HBox.margin>
                         </Label>
                         <CheckBox fx:id="cbxStatus" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="41.0" prefWidth="38.0" style="-fx-background-color: white; -fx-background-radius: 2;">
@@ -257,7 +257,7 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="72.0" prefWidth="580.0">
                <children>
-                  <Button fx:id="btnSignUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="86.0" prefWidth="80.0" style="-fx-background-color: orange;" text="SIGN UP" textAlignment="CENTER">
+                  <Button fx:id="btnSignUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="42.0" prefWidth="82.0" style="-fx-background-color: orange;" text="SIGN UP" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets left="210.0" />
                      </VBox.margin>

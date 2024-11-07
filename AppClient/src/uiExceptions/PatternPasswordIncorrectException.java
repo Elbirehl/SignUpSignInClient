@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
  * Custom exception to validate the format of a password. Ensures that the
  * password meets specific format requirements: - Minimum 8 characters - At
  * least one uppercase letter - At least one lowercase letter - At least one
- * digit - At least one special character (e.g., !@#$%^&*(),.?":{}|)
+ * digit - At least one special character 
  *
  * This exception is thrown if any of these conditions are not met.
  *

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * Custom exception for invalid email patterns.
- * Authors: Elbire, Meylin 
+ * @author  Elbire, Meylin 
  */
 public class PatternEmailIncorrectException extends Exception {
 

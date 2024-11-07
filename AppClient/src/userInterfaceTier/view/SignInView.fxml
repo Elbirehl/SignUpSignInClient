@@ -15,7 +15,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignInController">
+
+<AnchorPane fx:id="signIn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.controllers.SignInController">
     <children>
         <ImageView fitHeight="550.0" fitWidth="917.0" layoutX="92.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -73,7 +74,7 @@
                         </ToggleButton>
                     </children>
                 </HBox>
-                <Label fx:id="lblError" prefHeight="28.0" prefWidth="195.0" text="Text for errors" textFill="#ff0303">
+                <Label fx:id="lblError" prefHeight="28.0" prefWidth="235.0" textFill="#ff0303">
                     <padding>
                         <Insets top="10.0" />
                     </padding>
@@ -82,7 +83,7 @@
                     </VBox.margin>
                 </Label>
 
-                <Button fx:id="btnAccept" onAction="#handleButtonAction" prefHeight="18.0" prefWidth="62.0" style="-fx-background-color: ffad0f;" text="Accept" textAlignment="CENTER">
+                <Button fx:id="btnAccept" onAction="#handleButtonAction" prefHeight="31.0" prefWidth="74.0" style="-fx-background-color: ffad0f;" text="Accept" textAlignment="CENTER">
                     <font>
                         <Font name="Algerian" size="10.0" />
                     </font>
