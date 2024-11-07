@@ -52,8 +52,7 @@ import uiExceptions.PatternZipIncorrectException;
 import uiExceptions.TextEmptyException;
 
 /**
- * @author Meylin
- * @author Elbire
+ * @author Meylin, Elbire
  */
 public class SignUpController {
 
@@ -265,6 +264,8 @@ public class SignUpController {
         tfShowPassword.setVisible(false);
         // Make the "tfShowConfirmPassword" field hidden.
         tfShowConfirmPassword.setVisible(false);
+        // Set the CheckBox to be selected 
+        cbxStatus.setSelected(true);
         // Hide all error labels.
         clearErrorLabels();
         setTooltips();
@@ -674,7 +675,7 @@ public class SignUpController {
         tfZip.clear();
         tfCity.clear();
         tfMobile.clear();
-        cbxStatus.setSelected(false);
+        cbxStatus.setSelected(true);
     }
 
     /**
