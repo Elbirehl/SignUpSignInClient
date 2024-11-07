@@ -10,18 +10,17 @@ import java.util.logging.Logger;
 import logicalModel.message.Message;
 
 /**
- * The {@code ClientSocket} class manages socket connections to the server,
- * enabling sending and receiving of {@code Message} objects.
+ * The  ClientSocket class manages socket connections to the server,
+ * enabling sending and receiving of  Message objects.
  *
- * Configured with IP and port settings from {@code config.config}, this class
- * uses TCP to send a {@code Message} request and receive a server response.
+ * Configured with IP and port settings from  config.config, this class
+ * uses TCP to send a  Message request and receive a server response.
  *
  * Errors in connection or I/O are logged, and resources are safely closed in a
- * {@code finally} block.
+ * finally block.
  *
  * @author Irati and Olaia
  *
- * @see Message
  */
 public class ClientSocket {
 
@@ -31,14 +30,14 @@ public class ClientSocket {
     private static final Logger logger = Logger.getLogger(ClientSocket.class.getName());
 
     /**
-     * Sends a {@code Message} to the server and waits for a response.
+     * Sends a Message to the server and waits for a response.
      *
      * This method connects to the server using IP and port settings from
-     * {@code config.config}. It then sends the message and returns the response
+     * config.config. It then sends the message and returns the response
      * received.
      *
-     * @param request the {@code Message} to send to the server.
-     * @return the server’s response as a {@code Message}, or {@code null} on
+     * @param request the  Message to send to the server.
+     * @return the server’s response as a  Message, or null on
      * error.
      */
     public static Message sendRecieveMessage(Message request){

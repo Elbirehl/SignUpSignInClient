@@ -39,7 +39,7 @@ public class MainWindowController {
     private TitledPane tpMenu;
 
     @FXML
-    private AnchorPane anchorPane2;
+    private AnchorPane menu;
 
     @FXML
     private Button btnLogOut;

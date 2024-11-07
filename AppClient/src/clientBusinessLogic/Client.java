@@ -11,7 +11,7 @@ import logicalModel.message.MessageType;
 import logicalModel.model.User;
 
 /**
- * Implements the {@code Signable} interface to manage user authentication
+ * Implements the  Signable interface to manage user authentication
  * (sign-in and sign-up) via server communication. Processes server responses
  * and handles exceptions for specific error cases.
  *
@@ -21,11 +21,11 @@ public class Client implements Signable {
 
     /**
      * Attempts to sign in a user by sending their data to the server. Returns
-     * the {@code User} if successful, or throws an exception based on the
+     * the  User if successful, or throws an exception based on the
      * server's response.
      *
      * @param user the user attempting to sign in
-     * @return the signed-in {@code User} object if successful
+     * @return the signed-in  User object if successful
      * @throws MaxThreadsErrorException if the server has reached its thread
      * limit
      * @throws ServerErrorException if a server error occurs
@@ -63,11 +63,11 @@ public class Client implements Signable {
 
     /**
      * Attempts to sign up a new user by sending their data to the server.
-     * Returns the {@code User} if successful, or throws an exception if an
+     * Returns the User if successful, or throws an exception if an
      * error occurs.
      *
      * @param user the user attempting to sign up
-     * @return the signed-up {@code User} object if successful
+     * @return the signed-up  User object if successful
      * @throws ServerErrorException if a server error occurs
      * @throws UserExistErrorException if the user already exists
      * @throws MaxThreadsErrorException if the server has reached its thread

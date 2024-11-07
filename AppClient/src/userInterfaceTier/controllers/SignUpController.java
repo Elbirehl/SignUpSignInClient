@@ -825,25 +825,56 @@ public class SignUpController {
         }
     }
 
+    /**
+     * Sets an error style on the specified TextField and updates the associated
+     * Label with an error message.
+     *
+     * @param textfield the TextField to apply the error style to
+     * @param errorLabel the Label to display the error message
+     * @param message the error message to display
+     */
     private void setErrorStyle(TextField textfield, Label errorLabel, String message) {
         textfield.setStyle("-fx-border-color: red;");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setText(message);
     }
 
+    /**
+     * Sets an error style on the specified PasswordField and updates the
+     * associated Label with an error message.
+     *
+     * @param textfield the PasswordField to apply the error style to
+     * @param errorLabel the Label to display the error message
+     * @param message the error message to display
+     */
     private void setErrorStylePassword(PasswordField textfield, Label errorLabel, String message) {
         textfield.setStyle("-fx-border-color: red;");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setText(message);
     }
 
+    /**
+     * Clears the error style from the specified TextField and removes any error
+     * message from the associated Label.
+     *
+     * @param textfield the TextField to clear the error style from
+     * @param errorLabel the Label to clear the error message from
+     */
     private void clearErrorStyle(TextField textfield, Label errorLabel) {
         textfield.setStyle("");
         errorLabel.setText("");
     }
 
+    /**
+     * Clears the error style from the specified PasswordField and removes any
+     * error message from the associated Label.
+     *
+     * @param textfield the PasswordField to clear the error style from
+     * @param errorLabel the Label to clear the error message from
+     */
     private void clearErrorStylePassword(PasswordField textfield, Label errorLabel) {
         textfield.setStyle("");
         errorLabel.setText("");
     }
+
 }

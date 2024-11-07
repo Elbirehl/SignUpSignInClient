@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package userInterfaceTier.controllers;
 
 import application.ClientApplication;
@@ -17,12 +12,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
-/**
- * This class contains unit tests for the main window controller in the
- * application.
- *
- * Author: olaia
- */
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MainWindowControllerTest extends ApplicationTest {
 
@@ -33,33 +23,28 @@ public class MainWindowControllerTest extends ApplicationTest {
     public MainWindowControllerTest() {
     }
 
-    //Comprobar que esten bien.
-    //@Test
+    @Test
     public void test1_LogOutOk() {
         clickOn("#emailText");
-        write("olaialor@gmail.com");
+        write("admin@gmail.com");
         clickOn("#pfPasswrd");
-        write("abcd");
+        write("Abcd*1234");
         clickOn("#btnAccept");
-        verifyThat("#mainWindow", isVisible());
-
         clickOn("#tpMenu");
         sleep(500);
         verifyThat("#btnLogOut", isVisible());
         clickOn("#btnLogOut");
         verifyThat("Are you sure you want to log out?", isVisible());
         clickOn("Aceptar");
-
-        verifyThat("#pane", isVisible());
+        verifyThat("#signIn", isVisible());
     }
 
-    //@Test
+    @Test
     public void test2_LogOutCancel() {
-        // Simular inicio de sesión
         clickOn("#emailText");
-        write("olaialor@gmail.com");
+        write("admin@gmail.com");
         clickOn("#pfPasswrd");
-        write("abcd");
+        write("Abcd*1234");
         clickOn("#btnAccept");
         verifyThat("#mainWindow", isVisible());
 
@@ -76,15 +61,15 @@ public class MainWindowControllerTest extends ApplicationTest {
     @Test
     public void testUserData() {
         clickOn("#emailText");
-        write("olaialor@gmail.com");
+        write("admin@gmail.com");
         clickOn("#pfPasswrd");
-        write("abcd");
+        write("Abcd*1234");
         clickOn("#btnAccept");
         verifyThat("#mainWindow", isVisible());
 
-        String expectedName = "olaia";
-        String expectedEmail = "olaialor@gmail.com";
-        String expectedMobile = "628410255";
+        String expectedName = "Admin";
+        String expectedEmail = "admin@gmail.com";
+        String expectedMobile = "123456789";
         String expectedStatus = "Active";
 
         TextField tfFullName = lookup("#tfFullName").query();
