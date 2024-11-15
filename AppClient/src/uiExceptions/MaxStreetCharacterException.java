@@ -4,9 +4,14 @@ import javafx.scene.control.TextField;
 
 /**
  * Custom exception for exceeding maximum street length.
+ *
  * @author Elbire,Meylin
  */
 public class MaxStreetCharacterException extends Exception {
+
+    public static void validateStreetLength(TextField tfStreet) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     // Constructor without error message
     public MaxStreetCharacterException() {
@@ -17,16 +22,4 @@ public class MaxStreetCharacterException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate the street length.
-     * 
-     * @param tfStreet Street text field
-     * @throws MaxStreetCharacterException If the street name exceeds 255 characters
-     */
-    public static void validateStreetLength(TextField tfStreet) throws MaxStreetCharacterException {
-        if (tfStreet.getText().length() > 255) {
-            // Throw exception if the street length exceeds 255 characters
-            throw new MaxStreetCharacterException("The street must be shorter");
-        }
-    }
 }

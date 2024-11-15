@@ -10,6 +10,10 @@ import java.util.regex.Pattern;
 
 public class PatternFullNameIncorrectException extends Exception {
 
+    public static void validateFullName(TextField tfFullName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Constructor without error message
     public PatternFullNameIncorrectException() {
     }
@@ -19,16 +23,5 @@ public class PatternFullNameIncorrectException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate the full name field.
-     * 
-     * @param tfFullName Full name text field
-     * @throws PatternFullNameIncorrectException If the full name contains numbers or invalid characters
-     */
-    public static void validateFullName(TextField tfFullName) throws PatternFullNameIncorrectException {
-        if (!Pattern.matches("^[A-Za-zÀ-ÿ'\\s]+$", tfFullName.getText())) {
-            // Throw the exception if the full name contains numbers or invalid characters
-            throw new PatternFullNameIncorrectException("The full name can't contain numbers");
-        }
-    }
+  
 }

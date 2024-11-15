@@ -14,6 +14,10 @@ import javafx.scene.control.TextField;
  */
 public class PatternPasswordIncorrectException extends Exception {
 
+    public static void validatePasswordFormat(TextField tfShowPassword) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * Default constructor for PatternPasswordIncorrectException without an
      * error message.
@@ -31,39 +35,5 @@ public class PatternPasswordIncorrectException extends Exception {
         super(msg);
     }
 
-    /**
-     * Validates the format of the password entered in the provided text field.
-     *
-     * @param tfPassword the TextField containing the password to validate
-     * @throws PatternPasswordIncorrectException if the password does not meet
-     * the format requirements
-     */
-    public static void validatePasswordFormat(TextField tfPassword) throws PatternPasswordIncorrectException {
-        String password = tfPassword.getText();
-        
-        // Check if password has at least 8 characters
-        if (password.length() < 8) {
-            throw new PatternPasswordIncorrectException("Password must be at least 8 characters long");
-        }
-
-        // Check if password contains at least one uppercase letter
-        if (!password.matches(".*[A-Z].*")) {
-            throw new PatternPasswordIncorrectException("Password must contain at least one uppercase letter");
-        }
-
-        // Check if password contains at least one lowercase letter
-        if (!password.matches(".*[a-z].*")) {
-            throw new PatternPasswordIncorrectException("Password must contain at least one lowercase letter");
-        }
-
-        // Check if password contains at least one digit
-        if (!password.matches(".*\\d.*")) {
-            throw new PatternPasswordIncorrectException("Password must contain at least one digit");
-        }
-
-        // Check if password contains at least one special character
-        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
-            throw new PatternPasswordIncorrectException("Password must contain at least one special character");
-        }
-    }
+    
 }

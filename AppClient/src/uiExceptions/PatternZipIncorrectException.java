@@ -8,6 +8,10 @@ import javafx.scene.control.TextField;
  */
 public class PatternZipIncorrectException extends Exception {
 
+    public static void validateZipFormat(TextField tfZip) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Constructor without error message
     public PatternZipIncorrectException() {
     }
@@ -17,16 +21,4 @@ public class PatternZipIncorrectException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate ZIP code format.
-     * 
-     * @param tfZip ZIP code text field
-     * @throws PatternZipIncorrectException If the ZIP code doesn't follow the 5-digit format
-     */
-    public static void validateZipFormat(TextField tfZip) throws PatternZipIncorrectException {
-        if (!tfZip.getText().matches("\\d{5}$")) {
-            // Throw exception if the ZIP code is not a valid 5-digit number
-            throw new PatternZipIncorrectException("ZIP code must be 5 digits.");
-        }
-    }
 }

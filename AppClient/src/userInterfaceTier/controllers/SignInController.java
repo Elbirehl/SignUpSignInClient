@@ -5,6 +5,7 @@ import clientBusinessLogic.ClientFactory;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,25 +27,16 @@ import logicalExceptions.MaxThreadsErrorException;
 import logicalExceptions.ServerErrorException;
 import logicalExceptions.SignInErrorException;
 import logicalExceptions.UserNotActiveException;
+import logicalModel.interfaces.Signable;
 import logicalModel.model.User;
+import uiExceptions.MaxCityCharacterException;
 import uiExceptions.PatternEmailIncorrectException;
+
 /**
- * The SignInController class manages the sign-in functionality of the application.
- * It handles user input for email and password, validates the input, and manages
- * the visibility of password fields. It also controls the navigation to other
- * application views.
- * 
- * This class utilizes JavaFX for the user interface and includes methods
- * to handle button actions, password visibility, and transitions between views.
- * 
- * @author Irati and Olaia
+ * Controller for the Sign-In functionality. Manages user interactions and
+ * validations for the Sign-In process.
  */
 public class SignInController {
-    /**
-     * Constructs a new SignInController instance.
-     */
-    public SignInController() {
-    }
 
     @FXML
     private TextField emailText;
@@ -74,173 +66,160 @@ public class SignInController {
 
     private Stage stage;
 
-     /**
-     * Sets the stage for this controller.
-     * 
-     * @param stage the stage to be set.
-     */
+    // Variable de instancia para almacenar el objeto Signable
+    private Signable signable;
+
+    public SignInController() {
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
-    /**
-     * Returns the current stage of the controller.
-     * 
-     * @return the current stage.
-     */
+
     public Stage getStage() {
         return stage;
     }
 
-    /**
-     * Initializes the stage with the specified root node.
-     * 
-     * @param root the root node for the scene.
-     */
     public void initStage(Parent root) {
         try {
-            logger.info("Initializizng Sign In stage");
+            logger.info("Initializing Sign In stage");
+
+            // Obtén el objeto Signable una vez durante la inicialización
+            this.signable = ClientFactory.getSignable();
+
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            // The window title is "Sign In".
             stage.setTitle("Sign In");
-            // The window is not resizable.
             stage.setResizable(false);
-            Image icon = new Image(getClass().getResourceAsStream("/resources/images/catrina.png"));
-            stage.getIcons().add(icon);
-            // Focuses on the Email field as it is the first field the user needs to fill in
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/images/catrina.png")));
             emailText.isFocused();
-            // The icon for the ToggleButton will be the eye that shows the password.
             ivEyeIcon.setImage(new Image("/resources/images/ShowPasswd.png"));
             lblError.setText("");
             btnAccept.setDefaultButton(true);
-            // The user enters the password in pfPassword.
-            tfPasswrd.setVisible(false); // Initially not visible
+            tfPasswrd.setVisible(false);
 
             pfPasswrd.textProperty().addListener(this::textPropertyChange);
             tfPasswrd.textProperty().addListener(this::textPropertyChange);
-
             tgbtnEyeIcon.setOnAction(this::handelEyeIconToggleButtonAction);
-
             hypSignUp.setOnAction(this::handelSignUpHyperlink);
-
             stage.show();
         } catch (Exception e) {
-            String errorMsg = "Error opening window:\n" + e.getMessage();
-            logger.severe(errorMsg);
+            handleUnexpectedError("Error opening window", e);
         }
     }
 
-    /**
-     * Updates the visibility of the password fields based on user interaction.
-     * 
-     * @param observable the observable value.
-     * @param oldValue the old value of the password field.
-     * @param newValue the new value of the password field.
-     */
     public void textPropertyChange(ObservableValue observable, String oldValue, String newValue) {
-        // The password entered in the pfPasswrd field is mirrored in the tfPasswrd text field.
+        // Resetea el texto de lblError
+        lblError.setText("");
+
+        // Sincroniza los campos de texto dependiendo de cuál es visible
         if (pfPasswrd.isVisible()) {
             tfPasswrd.setText(pfPasswrd.getText());
-        // If the visible field is tfPasswrd, then the password is mirrored in the pfPasswrd field.
         } else if (tfPasswrd.isVisible()) {
             pfPasswrd.setText(tfPasswrd.getText());
         }
     }
 
-     /**
-     * Handles the action of the eye icon toggle button.
-     * 
-     * @param event the action event triggered by the button.
-     */
+// Agrega un listener similar para emailText
+    @FXML
+    public void initialize() {
+        emailText.textProperty().addListener((observable, oldValue, newValue) -> lblError.setText(""));
+        // Si ya tienes un método initStage que agrega listeners, también lo puedes hacer allí.
+    }
+
     @FXML
     public void handelEyeIconToggleButtonAction(ActionEvent event) {
         if (tgbtnEyeIcon.isSelected()) {
-            pfPasswrd.setVisible(false); // Hide the PasswordField
-            tfPasswrd.setVisible(true);  // Show the TextField (password visible)
-            // Change icon to "password visible"
+            pfPasswrd.setVisible(false);
+            tfPasswrd.setVisible(true);
             ivEyeIcon.setImage(new Image("/resources/images/HidePasswd.png"));
         } else {
-            tfPasswrd.setVisible(false); // Show the PasswordField
-            pfPasswrd.setVisible(true);  //Hide the TextField (password visible)
-            // Change icon to "password hidden"
+            tfPasswrd.setVisible(false);
+            pfPasswrd.setVisible(true);
             ivEyeIcon.setImage(new Image("/resources/images/ShowPasswd.png"));
         }
     }
 
-    /**
-     * Handles the action of the accept button.
-     * Validates email and password input, then attempts to sign in the user.
-     * 
-     * @param event the action event triggered by the button.
-     * @throws WrongEmailFormatException if the email format is incorrect.
-     * @throws IOException if an input or output exception occurs.
-     * @throws TextEmptyException if any input field is empty.
-     */
     @FXML
-    private void handleButtonAction(ActionEvent event) throws SignInErrorException, UserNotActiveException {
-      
-        String email = this.emailText.getText().trim();
-        String passwrd = this.pfPasswrd.getText().trim();
+    private void handleButtonAction(ActionEvent event) {
+        String email = emailText.getText().trim();
+        String passwrd = pfPasswrd.getText().trim();
 
-        
         try {
-            // Validates that the email and password fields are filled in; otherwise, informs the user to complete them in order to continue through the exception: "TextEmptyException".
-            TextEmptyException.validateNotEmpty(email, passwrd);
-            // Validates that the entered email has a valid format; otherwise, informs the user through the custom exception: "WrongEmailFormatException".
-            PatternEmailIncorrectException.validateEmail(this.emailText);
+            // Validar campos vacíos
+            if (email.isEmpty() || passwrd.isEmpty()) {
+                throw new TextEmptyException("Fields cannot be empty.");
+            }
 
+            // Validar el formato del correo electrónico
+            if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", email)) {
+                throw new PatternEmailIncorrectException("Invalid email format.");
+            }
+
+            // Crear objeto usuario y llamar al método de inicio de sesión
             User user = new User(email, passwrd);
-            // Check if the user exists + implement exceptions
-            User userSignedIn = ClientFactory.getSignable().signIn(user); 
-            // If the data is correct and the user is active, the "MainWindowView" window will open, passing in the user.
+            User userSignedIn = this.signable.signIn(user);
+
+            // Proceder a la ventana principal
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/MainWindowView.fxml"));
-            Parent root = (Parent) loader.load();
-            MainWindowController controller = ((MainWindowController) loader.getController());
+            Parent root = loader.load();
+            MainWindowController controller = loader.getController();
             controller.setStage(stage);
             controller.initStage(root, userSignedIn);
-        } catch (PatternEmailIncorrectException e) {
+
+        } catch (TextEmptyException | PatternEmailIncorrectException e) {
+            // Mostrar el mensaje de error cuando el campo está vacío o el correo es incorrecto
             lblError.setText(e.getMessage());
-            logger.severe(e.getLocalizedMessage());
-        } catch (TextEmptyException e) {
-            lblError.setText(e.getMessage());
-            logger.severe(e.getMessage());
-        } catch (MaxThreadsErrorException e){
-            new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        } catch (ServerErrorException e){
-            new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        } catch (IOException ex) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (UserNotActiveException e){
-            new Alert(Alert.AlertType.ERROR, "User is not active", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        }catch (SignInErrorException e){
-            new Alert(Alert.AlertType.ERROR, "User can't be found", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
+            logger.warning(e.getMessage());
+        } catch (SignInErrorException e) {
+            showErrorAlert("Sign-In Error", "User can't be found. Please check your credentials.");
+        } catch (UserNotActiveException e) {
+            showErrorAlert("User Inactive", "Your account is inactive. Please contact support.");
+        } catch (MaxThreadsErrorException e) {
+            showErrorAlert("Server Busy", "Please try again later. Too many requests.");
+        } catch (ServerErrorException e) {
+            showErrorAlert("Server Unavailable", "The server is currently down. Please try again later.");
+        } catch (IOException e) {
+            handleUnexpectedError("Error loading the main window", e);
         }
     }
-    /**
-     * Handles the action of the sign-up hyperlink.
-     * Navigates to the sign-up view.
-     * 
-     * @param event the action event triggered by the hyperlink.
-     */
+
     @FXML
     private void handelSignUpHyperlink(ActionEvent event) {
         try {
-            // Open SignUp window
-            emailText.setText("");
-            tfPasswrd.setText("");
-            pfPasswrd.setText("");
-            lblError.setText("");
+            resetFields();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/SignUpView.fxml"));
-            Parent root = (Parent) loader.load();
-            SignUpController controller = ((SignUpController) loader.getController());
+            Parent root = loader.load();
+            SignUpController controller = loader.getController();
             controller.initStage(root);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            handleUnexpectedError("Error opening Sign-Up window", e);
         }
+    }
+
+    private void validateInputs(String email, String passwrd) throws TextEmptyException, PatternEmailIncorrectException {
+        if (email.isEmpty() || passwrd.isEmpty()) {
+            throw new TextEmptyException("Fields cannot be empty.");
+        }
+        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", email)) {
+            throw new PatternEmailIncorrectException("Invalid email format.");
+        }
+    }
+
+    private void showErrorAlert(String title, String message) {
+        new Alert(Alert.AlertType.ERROR, message, ButtonType.OK).showAndWait();
+        logger.warning(message);
+    }
+
+    private void handleUnexpectedError(String context, Exception e) {
+        logger.log(Level.SEVERE, context, e);
+        new Alert(Alert.AlertType.ERROR, "An unexpected error occurred. Please try again.", ButtonType.OK).showAndWait();
+    }
+
+    private void resetFields() {
+        emailText.setText("");
+        pfPasswrd.setText("");
+        tfPasswrd.setText("");
+        lblError.setText("");
     }
 }

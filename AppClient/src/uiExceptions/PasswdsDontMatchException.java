@@ -9,6 +9,10 @@ import javafx.scene.control.PasswordField;
  */
 public class PasswdsDontMatchException extends Exception {
 
+    public static void validatePasswords(PasswordField pfHiddenPassword, PasswordField pfHiddenConfirmPassword) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Constructor without error message
     public PasswdsDontMatchException() {
     }
@@ -18,18 +22,5 @@ public class PasswdsDontMatchException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate if the passwords match.
-     * 
-     * @param pfHiddenPassword Password field
-     * @param pfHiddenConfirmPassword Confirm password field
-     * @throws PasswdsDontMatchException If the passwords don't match
-     */
-    public static void validatePasswords(PasswordField pfHiddenPassword, PasswordField pfHiddenConfirmPassword)
-            throws PasswdsDontMatchException {
-        if (!pfHiddenPassword.getText().equals(pfHiddenConfirmPassword.getText())) {
-            // Throw exception if the passwords don't match
-            throw new PasswdsDontMatchException("The passwords don't match");
-        }
-    }
+   
 }

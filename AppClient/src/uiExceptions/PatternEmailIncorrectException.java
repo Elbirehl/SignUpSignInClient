@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
  */
 public class PatternEmailIncorrectException extends Exception {
 
+    public static void validateEmail(TextField tfEmail) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Constructor without error message
     public PatternEmailIncorrectException() {
     }
@@ -18,18 +22,4 @@ public class PatternEmailIncorrectException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate the email field.
-     * 
-     * @param tfEmail Email text field
-     * @throws PatternEmailIncorrectException If the email format is invalid or length exceeds 320 characters
-     */
-    public static void validateEmail(TextField tfEmail) throws PatternEmailIncorrectException {
-        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", tfEmail.getText()) 
-            || tfEmail.getText().length() > 320) {
-
-            // Throw the exception if the email format is invalid or too long
-            throw new PatternEmailIncorrectException("The email must have a valid format");
-        }
-    }
 }

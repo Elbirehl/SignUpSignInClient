@@ -9,6 +9,10 @@ import javafx.scene.control.TextField;
  */
 public class PatternMobileIncorrectException extends Exception {
 
+    public static void validateMobileFormat(TextField tfMobile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Constructor without error message
     public PatternMobileIncorrectException() {
     }
@@ -18,17 +22,5 @@ public class PatternMobileIncorrectException extends Exception {
         super(msg);
     }
 
-    /**
-     * Static method to validate mobile number format.
-     *
-     * @param tfMobile Mobile number text field
-     * @throws PatternMobileIncorrectException If the mobile number is not 9
-     * digits
-     */
-    public static void validateMobileFormat(TextField tfMobile) throws PatternMobileIncorrectException {
-        if (!tfMobile.getText().matches("\\d{9}$")) {
-            // Throw exception if the mobile number is not 9 digits
-            throw new PatternMobileIncorrectException("Mobile must be 9 digits.");
-        }
-    }
+  
 }
