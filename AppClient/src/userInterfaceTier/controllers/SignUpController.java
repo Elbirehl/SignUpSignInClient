@@ -549,18 +549,6 @@ public class SignUpController {
             }
         }
     }
-
-    /*}catch (ServerErrorException e) {
-                    // Handle server-related errors with an alert message.
-                    new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
-                    logger.warning(e.getLocalizedMessage());
-                } catch (UserExistErrorException e) {
-                    new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
-                    logger.warning(e.getLocalizedMessage());
-                } catch (MaxThreadsErrorException e) {
-                    new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
-                    logger.warning(e.getLocalizedMessage());
-                }*/
     /**
      * Handles the action when the user clicks on the hyperlink to sign in.
      *
