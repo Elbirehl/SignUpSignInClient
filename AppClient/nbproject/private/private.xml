@@ -7,5 +7,15 @@
             <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/test/userInterfaceTier/controllers/MainWindowControllerTest.java</file>
             <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/test/userInterfaceTier/controllers/SignUpControllerTest.java</file>
         </group>
+        <group name="Clase">
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/userInterfaceTier/controllers/SignInController.java</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/userInterfaceTier/controllers/SignUpController.java</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/clientBusinessLogic/ClientSocket.java</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/userInterfaceTier/controllers/MainWindowController.java</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/config/config.properties</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/userInterfaceTier/view/SignInView.fxml</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/application/ClientApplication.java</file>
+            <file>file:/C:/Users/2dam/Desktop/SignUpSignInClient/AppClient/src/clientBusinessLogic/Client.java</file>
+        </group>
     </open-files>
 </project-private>

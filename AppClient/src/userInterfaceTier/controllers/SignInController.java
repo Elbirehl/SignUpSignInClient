@@ -178,11 +178,10 @@ public class SignInController {
      * @throws TextEmptyException if any input field is empty.
      */
     @FXML
-    private void handleButtonAction(ActionEvent event) throws SignInErrorException, UserNotActiveException {
+    private void handleButtonAction(ActionEvent event) {
       
         String email = this.emailText.getText().trim();
         String passwrd = this.pfPasswrd.getText().trim();
-
         
         try {
             // Validates that the email and password fields are filled in; otherwise, informs the user to complete them in order to continue through the exception: "TextEmptyException".
@@ -199,26 +198,13 @@ public class SignInController {
             MainWindowController controller = ((MainWindowController) loader.getController());
             controller.setStage(stage);
             controller.initStage(root, userSignedIn);
-        } catch (PatternEmailIncorrectException e) {
+            logger.info("Sign In successfully done.");
+        } catch (PatternEmailIncorrectException | TextEmptyException e) {
             lblError.setText(e.getMessage());
-            logger.severe(e.getLocalizedMessage());
-        } catch (TextEmptyException e) {
-            lblError.setText(e.getMessage());
-            logger.severe(e.getMessage());
-        } catch (MaxThreadsErrorException e){
-            new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        } catch (ServerErrorException e){
-            new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        } catch (IOException ex) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (UserNotActiveException e){
-            new Alert(Alert.AlertType.ERROR, "User is not active", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
-        }catch (SignInErrorException e){
-            new Alert(Alert.AlertType.ERROR, "User can't be found", ButtonType.OK).showAndWait();
-            logger.severe(e.getLocalizedMessage());
+            logger.warning(e.getLocalizedMessage());
+        } catch (MaxThreadsErrorException | ServerErrorException | UserNotActiveException | SignInErrorException | IOException  e){
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+            logger.warning(e.getLocalizedMessage());
         }
     }
     /**

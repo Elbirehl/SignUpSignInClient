@@ -52,10 +52,10 @@ public class Client implements Signable {
             throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
         } else if (response.getMessage() == MessageType.SERVER_ERROR) {
             throw new ServerErrorException("Internal server error");
-        } else if (response.getMessage() == MessageType.SIGN_IN_ERROR) {
-            throw new SignInErrorException("Error during sign-in process.");
-        } else if (response.getMessage() == MessageType.USER_NOT_ACTIVE) {
+        }  else if (response.getMessage() == MessageType.USER_NOT_ACTIVE) {
             throw new UserNotActiveException("The user is not active");
+        }else if (response.getMessage() == MessageType.SIGN_IN_ERROR) {
+            throw new SignInErrorException("Error during sign-in process.");
         }
 
         return resultUser;
