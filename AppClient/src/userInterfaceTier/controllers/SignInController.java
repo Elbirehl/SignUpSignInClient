@@ -5,6 +5,7 @@ import clientBusinessLogic.ClientFactory;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,18 +29,20 @@ import logicalExceptions.SignInErrorException;
 import logicalExceptions.UserNotActiveException;
 import logicalModel.model.User;
 import uiExceptions.PatternEmailIncorrectException;
+
 /**
- * The SignInController class manages the sign-in functionality of the application.
- * It handles user input for email and password, validates the input, and manages
- * the visibility of password fields. It also controls the navigation to other
- * application views.
- * 
- * This class utilizes JavaFX for the user interface and includes methods
- * to handle button actions, password visibility, and transitions between views.
- * 
+ * The SignInController class manages the sign-in functionality of the
+ * application. It handles user input for email and password, validates the
+ * input, and manages the visibility of password fields. It also controls the
+ * navigation to other application views.
+ *
+ * This class utilizes JavaFX for the user interface and includes methods to
+ * handle button actions, password visibility, and transitions between views.
+ *
  * @author Irati and Olaia
  */
 public class SignInController {
+
     /**
      * Constructs a new SignInController instance.
      */
@@ -74,18 +77,18 @@ public class SignInController {
 
     private Stage stage;
 
-     /**
+    /**
      * Sets the stage for this controller.
-     * 
+     *
      * @param stage the stage to be set.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
+
     /**
      * Returns the current stage of the controller.
-     * 
+     *
      * @return the current stage.
      */
     public Stage getStage() {
@@ -94,7 +97,7 @@ public class SignInController {
 
     /**
      * Initializes the stage with the specified root node.
-     * 
+     *
      * @param root the root node for the scene.
      */
     public void initStage(Parent root) {
@@ -133,7 +136,7 @@ public class SignInController {
 
     /**
      * Updates the visibility of the password fields based on user interaction.
-     * 
+     *
      * @param observable the observable value.
      * @param oldValue the old value of the password field.
      * @param newValue the new value of the password field.
@@ -142,15 +145,15 @@ public class SignInController {
         // The password entered in the pfPasswrd field is mirrored in the tfPasswrd text field.
         if (pfPasswrd.isVisible()) {
             tfPasswrd.setText(pfPasswrd.getText());
-        // If the visible field is tfPasswrd, then the password is mirrored in the pfPasswrd field.
+            // If the visible field is tfPasswrd, then the password is mirrored in the pfPasswrd field.
         } else if (tfPasswrd.isVisible()) {
             pfPasswrd.setText(tfPasswrd.getText());
         }
     }
 
-     /**
+    /**
      * Handles the action of the eye icon toggle button.
-     * 
+     *
      * @param event the action event triggered by the button.
      */
     @FXML
@@ -169,9 +172,9 @@ public class SignInController {
     }
 
     /**
-     * Handles the action of the accept button.
-     * Validates email and password input, then attempts to sign in the user.
-     * 
+     * Handles the action of the accept button. Validates email and password
+     * input, then attempts to sign in the user.
+     *
      * @param event the action event triggered by the button.
      * @throws WrongEmailFormatException if the email format is incorrect.
      * @throws IOException if an input or output exception occurs.
@@ -179,52 +182,58 @@ public class SignInController {
      */
     @FXML
     private void handleButtonAction(ActionEvent event) throws SignInErrorException, UserNotActiveException {
-      
+
         String email = this.emailText.getText().trim();
         String passwrd = this.pfPasswrd.getText().trim();
 
-        
         try {
             // Validates that the email and password fields are filled in; otherwise, informs the user to complete them in order to continue through the exception: "TextEmptyException".
-            TextEmptyException.validateNotEmpty(email, passwrd);
+            if (passwrd == null || email.trim().isEmpty()) {
+                throw new TextEmptyException("The fields cannot be empty.");
+            }
             // Validates that the entered email has a valid format; otherwise, informs the user through the custom exception: "WrongEmailFormatException".
-            PatternEmailIncorrectException.validateEmail(this.emailText);
-
-            User user = new User(email, passwrd);
-            // Check if the user exists + implement exceptions
-            User userSignedIn = ClientFactory.getSignable().signIn(user); 
-            // If the data is correct and the user is active, the "MainWindowView" window will open, passing in the user.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/MainWindowView.fxml"));
-            Parent root = (Parent) loader.load();
-            MainWindowController controller = ((MainWindowController) loader.getController());
-            controller.setStage(stage);
-            controller.initStage(root, userSignedIn);
+            if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", emailText.getText())
+                    || emailText.getText().length() > 320) {
+                // Throw the exception if the email format is invalid or too long
+                throw new PatternEmailIncorrectException("The email must have a valid format");
+            } else {
+                User user = new User(email, passwrd);
+                // Check if the user exists + implement exceptions
+                User userSignedIn = ClientFactory.getSignable().signIn(user);
+                // If the data is correct and the user is active, the "MainWindowView" window will open, passing in the user.
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/view/MainWindowView.fxml"));
+                Parent root = (Parent) loader.load();
+                MainWindowController controller = ((MainWindowController) loader.getController());
+                controller.setStage(stage);
+                controller.initStage(root, userSignedIn);
+            }
         } catch (PatternEmailIncorrectException e) {
             lblError.setText(e.getMessage());
             logger.severe(e.getLocalizedMessage());
         } catch (TextEmptyException e) {
             lblError.setText(e.getMessage());
             logger.severe(e.getMessage());
-        } catch (MaxThreadsErrorException e){
+        } catch (MaxThreadsErrorException e) {
             new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
             logger.severe(e.getLocalizedMessage());
-        } catch (ServerErrorException e){
+        } catch (ServerErrorException e) {
             new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
             logger.severe(e.getLocalizedMessage());
         } catch (IOException ex) {
             Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (UserNotActiveException e){
+        } catch (UserNotActiveException e) {
             new Alert(Alert.AlertType.ERROR, "User is not active", ButtonType.OK).showAndWait();
             logger.severe(e.getLocalizedMessage());
-        }catch (SignInErrorException e){
+        } catch (SignInErrorException e) {
             new Alert(Alert.AlertType.ERROR, "User can't be found", ButtonType.OK).showAndWait();
             logger.severe(e.getLocalizedMessage());
         }
     }
+
     /**
-     * Handles the action of the sign-up hyperlink.
-     * Navigates to the sign-up view.
-     * 
+     * Handles the action of the sign-up hyperlink. Navigates to the sign-up
+     * view.
+     *
      * @param event the action event triggered by the hyperlink.
      */
     @FXML

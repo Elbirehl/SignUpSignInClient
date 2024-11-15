@@ -9,6 +9,7 @@ package userInterfaceTier.controllers;
 
 import clientBusinessLogic.ClientFactory;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -245,7 +246,6 @@ public class SignUpController {
         Scene scene = new Scene(root);
         stage = new Stage();
         stage.setScene(scene);
-
         // Set the title of the window to "SignUp".
         stage.setTitle("SignUp");
         // Add an icon of a "catrina" to the window.
@@ -272,6 +272,15 @@ public class SignUpController {
         setPromptText();
         // Create a ContextMenu with options: Reset Form, Help, and About App.
         setUpContextMenu();
+
+        tfFullName.textProperty().addListener(this::textPropertyChange);
+        tfEmail.textProperty().addListener(this::textPropertyChange);
+        tfShowPassword.textProperty().addListener(this::textPropertyChange);
+        tfShowConfirmPassword.textProperty().addListener(this::textPropertyChange);
+        tfStreet.textProperty().addListener(this::textPropertyChange);
+        tfZip.textProperty().addListener(this::textPropertyChange);
+        tfCity.textProperty().addListener(this::textPropertyChange);
+        tfMobile.textProperty().addListener(this::textPropertyChange);
 
         // Add listener for password visibility toggle between pfHiddenPassword and tfShowPassword.
         pfHiddenPassword.textProperty().addListener(this::passwrdIsVisible);
@@ -403,14 +412,22 @@ public class SignUpController {
 
         try {
             // Validate that all required fields are filled out.
-            TextEmptyException.checkFields(tfFullName, tfEmail, pfHiddenPassword, pfHiddenConfirmPassword,
-                    tfStreet, tfCity, tfZip, tfMobile);
+            if (tfFullName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfHiddenPassword.getText().isEmpty()
+                    || pfHiddenConfirmPassword.getText().isEmpty() || tfStreet.getText().isEmpty() || tfCity.getText().isEmpty()
+                    || tfZip.getText().isEmpty() || tfMobile.getText().isEmpty()) {
 
+                // Throw exception if any field is empty
+                throw new TextEmptyException("You must fill all the parameters");
+            }
             try {
                 // Validate that the "tfFullName" field does not contain any numbers.
-                PatternFullNameIncorrectException.validateFullName(tfFullName);
-                name = tfFullName.getText();
-                clearErrorStyle(tfFullName, labelErrorFullName);
+                if (!Pattern.matches("^[A-Za-zÀ-ÿ'\\s]+$", tfFullName.getText())) {
+                    // Throw the exception if the full name contains numbers or invalid characters
+                    throw new PatternFullNameIncorrectException("The full name can't contain numbers");
+                } else {
+                    name = tfFullName.getText();
+                    clearErrorStyle(tfFullName, labelErrorFullName);
+                }
             } catch (PatternFullNameIncorrectException e) {
                 // If it contains numbers, show "PatternFullNameIncorrectException" in labelErrorFullName.
                 setErrorStyle(tfFullName, labelErrorFullName, e.getMessage());
@@ -419,12 +436,17 @@ public class SignUpController {
                     focused = true;
                 }
             }
-
             try {
                 // Validate that the "tfEmail" field follows correct email format and has a maximum of 320 characters.
-                PatternEmailIncorrectException.validateEmail(tfEmail);
-                email = tfEmail.getText();
-                clearErrorStyle(tfEmail, labelErrorEmail);
+                if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", tfEmail.getText())
+                        || tfEmail.getText().length() > 320) {
+
+                    // Throw the exception if the email format is invalid or too long
+                    throw new PatternEmailIncorrectException("The email must have a valid format");
+                } else {
+                    email = tfEmail.getText();
+                    clearErrorStyle(tfEmail, labelErrorEmail);
+                }
             } catch (PatternEmailIncorrectException e) {
                 // If invalid, show "PatternEmailIncorrectException" in labelErrorEmail.
                 setErrorStyle(tfEmail, labelErrorEmail, e.getMessage());
@@ -436,7 +458,32 @@ public class SignUpController {
 
             try {
                 // Validate that the password format in "tfShowPassword" meets criteria.
-                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
+                String passwordValidate = tfShowPassword.getText();
+
+                // Check if password has at least 8 characters
+                if (passwordValidate.length() < 8) {
+                    throw new PatternPasswordIncorrectException("Password must be at least 8 characters long");
+                }
+
+                // Check if password contains at least one uppercase letter
+                if (!passwordValidate.matches(".*[A-Z].*")) {
+                    throw new PatternPasswordIncorrectException("Password must contain at least one uppercase letter");
+                }
+
+                // Check if password contains at least one lowercase letter
+                if (!passwordValidate.matches(".*[a-z].*")) {
+                    throw new PatternPasswordIncorrectException("Password must contain at least one lowercase letter");
+                }
+
+                // Check if password contains at least one digit
+                if (!passwordValidate.matches(".*\\d.*")) {
+                    throw new PatternPasswordIncorrectException("Password must contain at least one digit");
+                }
+
+                // Check if password contains at least one special character
+                if (!passwordValidate.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+                    throw new PatternPasswordIncorrectException("Password must contain at least one special character");
+                }
                 if (tfShowPassword.isVisible()) {
                     clearErrorStyle(tfShowPassword, labelErrorPasswd);
                 } else {
@@ -444,8 +491,13 @@ public class SignUpController {
                 }
                 try {
                     // Validate that "pfHiddenConfirmPassword" matches "pfHiddenPassword".
-                    PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
-                    password = pfHiddenPassword.getText();
+
+                    if (!pfHiddenPassword.getText().equals(pfHiddenConfirmPassword.getText())) {
+                        // Throw exception if the passwords don't match
+                        throw new PasswdsDontMatchException("The passwords don't match");
+                    } else {
+                        password = pfHiddenPassword.getText();
+                    }
                     if (pfHiddenConfirmPassword.isVisible()) {
                         clearErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd);
                     } else {
@@ -485,9 +537,13 @@ public class SignUpController {
 
             try {
                 // Validate that "tfStreet" does not exceed 255 characters.
-                MaxStreetCharacterException.validateStreetLength(tfStreet);
-                street = tfStreet.getText();
-                clearErrorStyle(tfStreet, labelErrorStreet);
+                if (tfStreet.getText().length() > 255) {
+                    // Throw exception if the street length exceeds 255 characters
+                    throw new MaxStreetCharacterException("Street must be shorter");
+                } else {
+                    street = tfStreet.getText();
+                    clearErrorStyle(tfStreet, labelErrorStreet);
+                }
             } catch (MaxStreetCharacterException e) {
                 // If exceeded, show "MaxStreetCharacterException" in labelErrorStreet.
                 setErrorStyle(tfStreet, labelErrorStreet, e.getMessage());
@@ -496,12 +552,15 @@ public class SignUpController {
                     focused = true;
                 }
             }
-
             try {
                 // Validate that "tfZip" contains only digits and is a maximum of 5 numbers.
-                PatternZipIncorrectException.validateZipFormat(tfZip);
-                zip = Integer.parseInt(tfZip.getText());
-                clearErrorStyle(tfZip, labelErrorZip);
+                if (!tfZip.getText().matches("\\d{5}$")) {
+                    // Throw exception if the ZIP code is not a valid 5-digit number
+                    throw new PatternZipIncorrectException("ZIP must be 5 digits.");
+                } else {
+                    zip = Integer.parseInt(tfZip.getText());
+                    clearErrorStyle(tfZip, labelErrorZip);
+                }
             } catch (PatternZipIncorrectException e) {
                 // If invalid, show "PatternZipIncorrectException" in labelErrorZip.
                 setErrorStyle(tfZip, labelErrorZip, e.getMessage());
@@ -510,12 +569,15 @@ public class SignUpController {
                     focused = true;
                 }
             }
-
             try {
                 // Validate that "tfCity" does not exceed 58 characters.
-                MaxCityCharacterException.validateCityLength(tfCity);
-                city = tfCity.getText();
-                clearErrorStyle(tfCity, labelErrorCity);
+                if (tfCity.getText().length() > 58) {
+                    // Throw exception if the city name length exceeds 58 characters
+                    throw new MaxCityCharacterException("City must be shorter");
+                } else {
+                    city = tfCity.getText();
+                    clearErrorStyle(tfCity, labelErrorCity);
+                }
             } catch (MaxCityCharacterException e) {
                 // If exceeded, show "MaxCityCharacterException" in labelErrorCity.
                 setErrorStyle(tfCity, labelErrorCity, e.getMessage());
@@ -524,12 +586,15 @@ public class SignUpController {
                     focused = true;
                 }
             }
-
             try {
                 // Validate that "tfMobile" contains only digits and has a maximum of 9 characters.
-                PatternMobileIncorrectException.validateMobileFormat(tfMobile);
-                mobile = Integer.parseInt(tfMobile.getText());
-                clearErrorStyle(tfMobile, labelErrorMobile);
+                if (!tfMobile.getText().matches("\\d{9}$")) {
+                    // Throw exception if the mobile number is not 9 digits
+                    throw new PatternMobileIncorrectException("Mobile must be 9 digits.");
+                } else {
+                    mobile = Integer.parseInt(tfMobile.getText());
+                    clearErrorStyle(tfMobile, labelErrorMobile);
+                }
             } catch (PatternMobileIncorrectException e) {
                 // If invalid, show "PatternMobileIncorrectException" in labelErrorMobile.
                 setErrorStyle(tfMobile, labelErrorMobile, e.getMessage());
@@ -546,8 +611,6 @@ public class SignUpController {
             if (!(email == null || password == null || name == null || street == null || mobile == 0 || city == null || zip == 0)) {
                 newUser = new User(email, password, name, street, mobile, city, zip, active);
 
-                // Get an implementation of the "Signable" interface from the "ClientFactory".
-                signable = ClientFactory.getSignable();
                 try {
                     // Call the signUp method, passing the User object.
                     newUserValidate = signable.signUp(newUser);
@@ -572,6 +635,61 @@ public class SignUpController {
         } catch (TextEmptyException e) {
             // If fields are missing, trigger "TextEmptyException" in labelErrorEmpty.
             labelErrorEmpty.setText(e.getMessage());
+        }
+    }
+
+    private void textPropertyChange(ObservableValue observable,
+            String oldValue,
+            String newValue) {
+
+        if (observable == tfFullName.textProperty()) {
+            if (labelErrorFullName.getText().equals("The full name can't contain numbers")) {
+                clearErrorStyle(tfFullName, labelErrorFullName);
+            }
+        }
+        if (observable == tfEmail.textProperty()) {
+            if (labelErrorEmail.getText().equals("The email must have a valid format")) {
+                clearErrorStyle(tfEmail, labelErrorEmail);
+            }
+        }
+        if (observable == tfShowPassword.textProperty()) {
+            if (labelErrorPasswd.getText().equals("Password must be at least 8 characters long")) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            } else if (labelErrorPasswd.getText().equals("Password must contain at least one uppercase letter")) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            } else if (labelErrorPasswd.getText().equals("Password must contain at least one lowercase letter")) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            } else if (labelErrorPasswd.getText().equals("Password must contain at least one digit")) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            } else if (labelErrorPasswd.getText().equals("Password must contain at least one special character")) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            }
+        }
+
+        if (observable == tfShowConfirmPassword.textProperty()) {
+            if (labelErrorConfirmPasswd.getText().equals("The passwords don't match")) {
+                clearErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd);
+            }
+        }
+        if (observable == tfStreet.textProperty()) {
+            if (labelErrorStreet.getText().equals("Street must be shorter")) {
+                clearErrorStyle(tfStreet, labelErrorStreet);
+            }
+        }
+        if (observable == tfZip.textProperty()) {
+            if (labelErrorZip.getText().equals("ZIP must be 5 digits.")) {
+                clearErrorStyle(tfZip, labelErrorZip);
+            }
+        }
+        if (observable == tfCity.textProperty()) {
+            if (labelErrorCity.getText().equals("City must be shorter")) {
+                clearErrorStyle(tfCity, labelErrorCity);
+            }
+        }
+        if (observable == tfMobile.textProperty()) {
+            if (labelErrorMobile.getText().equals("Mobile must be 9 digits.")) {
+                clearErrorStyle(tfMobile, labelErrorMobile);
+            }
         }
     }
 
