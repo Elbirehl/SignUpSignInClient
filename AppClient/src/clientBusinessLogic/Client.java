@@ -82,7 +82,7 @@ public class Client implements Signable {
         Message response = ClientSocket.sendRecieveMessage(request);
 
         if (response == null) {
-            throw new ServerErrorException("No response from server.");
+            throw new ServerErrorException("At this moment server is not available. Please try later.");
         }
 
         User resultUser = null;
@@ -93,11 +93,11 @@ public class Client implements Signable {
                     resultUser = response.getUser();
                     break;
                 case SERVER_ERROR:
-                    throw new ServerErrorException("Internal server error");
+                    throw new ServerErrorException("At this moment server is not available. Please try later.");
                 case USER_EXISTS_ERROR:
-                    throw new UserExistErrorException("The user already exists");
+                    throw new UserExistErrorException("The email entered is already in use.");
                 case MAX_THREADS_ERROR:
-                    throw new MaxThreadsErrorException("Maximum threads reached. Please wait and try again later.");
+                    throw new MaxThreadsErrorException("Your request can't be attended. Please try later.");
                 default:
                     break;
             }

@@ -245,7 +245,6 @@ public class SignUpController {
         Scene scene = new Scene(root);
         stage = new Stage();
         stage.setScene(scene);
-
         // Set the title of the window to "SignUp".
         stage.setTitle("SignUp");
         // Add an icon of a "catrina" to the window.
@@ -291,7 +290,6 @@ public class SignUpController {
         stage.setOnCloseRequest(this::handleCloseRequest);
         signable = ClientFactory.getSignable();
         stage.showAndWait();
-
     }
 
     /**
@@ -309,7 +307,6 @@ public class SignUpController {
      * method).
      */
     public void passwrdIsVisible(ObservableValue observable, String oldValue, String newValue) {
-
         // The text from "pfHiddenPassword" is copied to "tfShowPassword" and vice versa.
         if (pfHiddenPassword.isVisible()) {
             tfShowPassword.setText(pfHiddenPassword.getText());
@@ -390,9 +387,8 @@ public class SignUpController {
      * the system.
      */
     @FXML
-    private void handleSignUp(ActionEvent event) throws ServerErrorException, UserExistErrorException {
-        // Clear error messages each time btnSignUp is clicked.
-        clearErrorLabels();
+    private void handleSignUp(ActionEvent event) {
+        // Clear error messages each time btnSignUp is clicked.    
         User newUser;
         User newUserValidate;
         // Variables to create a new user.
@@ -400,144 +396,57 @@ public class SignUpController {
         int zip = 0, mobile = 0;
         boolean active;
         boolean focused = false;
-
         try {
+            clearErrorLabels();
             // Validate that all required fields are filled out.
             TextEmptyException.checkFields(tfFullName, tfEmail, pfHiddenPassword, pfHiddenConfirmPassword,
                     tfStreet, tfCity, tfZip, tfMobile);
 
-            try {
-                // Validate that the "tfFullName" field does not contain any numbers.
-                PatternFullNameIncorrectException.validateFullName(tfFullName);
-                name = tfFullName.getText();
-                clearErrorStyle(tfFullName, labelErrorFullName);
-            } catch (PatternFullNameIncorrectException e) {
-                // If it contains numbers, show "PatternFullNameIncorrectException" in labelErrorFullName.
-                setErrorStyle(tfFullName, labelErrorFullName, e.getMessage());
-                if (!focused) {
-                    tfFullName.requestFocus();
-                    focused = true;
-                }
+            // Validate that the "tfFullName" field does not contain any numbers.
+            PatternFullNameIncorrectException.validateFullName(tfFullName);
+            name = tfFullName.getText();
+            clearErrorStyle(tfFullName, labelErrorFullName);
+
+            // Validate that the "tfEmail" field follows correct email format and has a maximum of 320 characters.
+            PatternEmailIncorrectException.validateEmail(tfEmail);
+            email = tfEmail.getText();
+            clearErrorStyle(tfEmail, labelErrorEmail);
+
+            // Validate that the password format in "tfShowPassword" meets criteria.
+            PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
+            if (tfShowPassword.isVisible()) {
+                clearErrorStyle(tfShowPassword, labelErrorPasswd);
+            } else {
+                clearErrorStylePassword(pfHiddenPassword, labelErrorPasswd);
             }
 
-            try {
-                // Validate that the "tfEmail" field follows correct email format and has a maximum of 320 characters.
-                PatternEmailIncorrectException.validateEmail(tfEmail);
-                email = tfEmail.getText();
-                clearErrorStyle(tfEmail, labelErrorEmail);
-            } catch (PatternEmailIncorrectException e) {
-                // If invalid, show "PatternEmailIncorrectException" in labelErrorEmail.
-                setErrorStyle(tfEmail, labelErrorEmail, e.getMessage());
-                if (!focused) {
-                    tfEmail.requestFocus();
-                    focused = true;
-                }
+            // Validate that "pfHiddenConfirmPassword" matches "pfHiddenPassword".
+            PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
+            password = pfHiddenPassword.getText();
+            if (pfHiddenConfirmPassword.isVisible()) {
+                clearErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd);
+            } else {
+                clearErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd);
             }
 
-            try {
-                // Validate that the password format in "tfShowPassword" meets criteria.
-                PatternPasswordIncorrectException.validatePasswordFormat(tfShowPassword);
-                if (tfShowPassword.isVisible()) {
-                    clearErrorStyle(tfShowPassword, labelErrorPasswd);
-                } else {
-                    clearErrorStylePassword(pfHiddenPassword, labelErrorPasswd);
-                }
-                try {
-                    // Validate that "pfHiddenConfirmPassword" matches "pfHiddenPassword".
-                    PasswdsDontMatchException.validatePasswords(pfHiddenPassword, pfHiddenConfirmPassword);
-                    password = pfHiddenPassword.getText();
-                    if (pfHiddenConfirmPassword.isVisible()) {
-                        clearErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd);
-                    } else {
-                        clearErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd);
-                    }
-                } catch (PasswdsDontMatchException e) {
-                    // If not matching, show "PasswdsDontMatchException" in labelErrorConfirmPasswd.
-                    if (tfShowConfirmPassword.isVisible()) {
-                        setErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
-                    } else {
-                        setErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
-                    }
-                    if (!focused) {
-                        if (tfShowConfirmPassword.isVisible()) {
-                            tfShowConfirmPassword.requestFocus();
-                        } else {
-                            pfHiddenConfirmPassword.requestFocus();
-                        }
-                        focused = true;
-                    }
-                }
-            } catch (PatternPasswordIncorrectException e) {
-                if (tfShowPassword.isVisible()) {
-                    setErrorStyle(tfShowPassword, labelErrorPasswd, e.getMessage());
-                } else {
-                    setErrorStylePassword(pfHiddenPassword, labelErrorPasswd, e.getMessage());
-                }
-                if (!focused) {
-                    if (tfShowPassword.isVisible()) {
-                        tfShowPassword.requestFocus();
-                    } else {
-                        pfHiddenPassword.requestFocus();
-                    }
-                    focused = true;
-                }
-            }
+            // Validate that "tfStreet" does not exceed 255 characters.
+            MaxStreetCharacterException.validateStreetLength(tfStreet);
+            street = tfStreet.getText();
+            clearErrorStyle(tfStreet, labelErrorStreet);
 
-            try {
-                // Validate that "tfStreet" does not exceed 255 characters.
-                MaxStreetCharacterException.validateStreetLength(tfStreet);
-                street = tfStreet.getText();
-                clearErrorStyle(tfStreet, labelErrorStreet);
-            } catch (MaxStreetCharacterException e) {
-                // If exceeded, show "MaxStreetCharacterException" in labelErrorStreet.
-                setErrorStyle(tfStreet, labelErrorStreet, e.getMessage());
-                if (!focused) {
-                    tfStreet.requestFocus();
-                    focused = true;
-                }
-            }
+            // Validate that "tfZip" contains only digits and is a maximum of 5 numbers.
+            PatternZipIncorrectException.validateZipFormat(tfZip);
+            zip = Integer.parseInt(tfZip.getText());
+            clearErrorStyle(tfZip, labelErrorZip);
 
-            try {
-                // Validate that "tfZip" contains only digits and is a maximum of 5 numbers.
-                PatternZipIncorrectException.validateZipFormat(tfZip);
-                zip = Integer.parseInt(tfZip.getText());
-                clearErrorStyle(tfZip, labelErrorZip);
-            } catch (PatternZipIncorrectException e) {
-                // If invalid, show "PatternZipIncorrectException" in labelErrorZip.
-                setErrorStyle(tfZip, labelErrorZip, e.getMessage());
-                if (!focused) {
-                    tfZip.requestFocus();
-                    focused = true;
-                }
-            }
+            // Validate that "tfCity" does not exceed 58 characters.
+            MaxCityCharacterException.validateCityLength(tfCity);
+            city = tfCity.getText();
+            clearErrorStyle(tfCity, labelErrorCity);
 
-            try {
-                // Validate that "tfCity" does not exceed 58 characters.
-                MaxCityCharacterException.validateCityLength(tfCity);
-                city = tfCity.getText();
-                clearErrorStyle(tfCity, labelErrorCity);
-            } catch (MaxCityCharacterException e) {
-                // If exceeded, show "MaxCityCharacterException" in labelErrorCity.
-                setErrorStyle(tfCity, labelErrorCity, e.getMessage());
-                if (!focused) {
-                    tfCity.requestFocus();
-                    focused = true;
-                }
-            }
-
-            try {
-                // Validate that "tfMobile" contains only digits and has a maximum of 9 characters.
-                PatternMobileIncorrectException.validateMobileFormat(tfMobile);
-                mobile = Integer.parseInt(tfMobile.getText());
-                clearErrorStyle(tfMobile, labelErrorMobile);
-            } catch (PatternMobileIncorrectException e) {
-                // If invalid, show "PatternMobileIncorrectException" in labelErrorMobile.
-                setErrorStyle(tfMobile, labelErrorMobile, e.getMessage());
-                if (!focused) {
-                    tfMobile.requestFocus();
-                    focused = true;
-                }
-            }
+            PatternMobileIncorrectException.validateMobileFormat(tfMobile);
+            mobile = Integer.parseInt(tfMobile.getText());
+            clearErrorStyle(tfMobile, labelErrorMobile);
 
             // If selected, the user will be considered active; otherwise, inactive.
             active = cbxStatus.selectedProperty().getValue();
@@ -548,33 +457,110 @@ public class SignUpController {
 
                 // Get an implementation of the "Signable" interface from the "ClientFactory".
                 signable = ClientFactory.getSignable();
-                try {
-                    // Call the signUp method, passing the User object.
-                    newUserValidate = signable.signUp(newUser);
-                    if (newUserValidate != null) {
-                        // Show an INFORMATION alert with the message "Registration successful."
-                        new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered.", ButtonType.OK).showAndWait();
-                        // After accepting the message, close the SignUp window and return control to the SignIn window.
-                        stage.close();
-                    }
-                } catch (ServerErrorException e) {
-                    // Handle server-related errors with an alert message.
-                    new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
-                    logger.severe(e.getLocalizedMessage());
-                } catch (UserExistErrorException e) {
-                    new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
-                    logger.severe(e.getLocalizedMessage());
-                } catch (MaxThreadsErrorException e) {
-                    new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
-                    logger.severe(e.getLocalizedMessage());
+
+                // Call the signUp method, passing the User object.
+                newUserValidate = signable.signUp(newUser);
+                if (newUserValidate != null) {
+                    // Show an INFORMATION alert with the message "Registration successful."
+                    new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered.", ButtonType.OK).showAndWait();
+                    // After accepting the message, close the SignUp window and return control to the SignIn window.
+                    logger.info("The user has successfully registered.");
+                    stage.close();
                 }
+
             }
+        } catch (ServerErrorException | UserExistErrorException | MaxThreadsErrorException e) {
+            // Handle server-related errors with an alert message.
+            new Alert(Alert.AlertType.ERROR, e.getLocalizedMessage(), ButtonType.OK).showAndWait();
+            logger.warning(e.getLocalizedMessage());
         } catch (TextEmptyException e) {
             // If fields are missing, trigger "TextEmptyException" in labelErrorEmpty.
             labelErrorEmpty.setText(e.getMessage());
+        } catch (PatternFullNameIncorrectException e) {
+            // If it contains numbers, show "PatternFullNameIncorrectException" in labelErrorFullName.
+            setErrorStyle(tfFullName, labelErrorFullName, e.getMessage());
+            if (!focused) {
+                tfFullName.requestFocus();
+                focused = true;
+            }
+        } catch (PatternEmailIncorrectException e) {
+            // If invalid, show "PatternEmailIncorrectException" in labelErrorEmail.
+            setErrorStyle(tfEmail, labelErrorEmail, e.getMessage());
+            if (!focused) {
+                tfEmail.requestFocus();
+                focused = true;
+            }
+
+        } catch (PatternPasswordIncorrectException e) {
+            if (tfShowPassword.isVisible()) {
+                setErrorStyle(tfShowPassword, labelErrorPasswd, e.getMessage());
+            } else {
+                setErrorStylePassword(pfHiddenPassword, labelErrorPasswd, e.getMessage());
+            }
+            if (!focused) {
+                if (tfShowPassword.isVisible()) {
+                    tfShowPassword.requestFocus();
+                } else {
+                    pfHiddenPassword.requestFocus();
+                }
+                focused = true;
+            }
+        } catch (PasswdsDontMatchException e) {
+            // If not matching, show "PasswdsDontMatchException" in labelErrorConfirmPasswd.
+            if (tfShowConfirmPassword.isVisible()) {
+                setErrorStyle(tfShowConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
+            } else {
+                setErrorStylePassword(pfHiddenConfirmPassword, labelErrorConfirmPasswd, e.getMessage());
+            }
+            if (!focused) {
+                if (tfShowConfirmPassword.isVisible()) {
+                    tfShowConfirmPassword.requestFocus();
+                } else {
+                    pfHiddenConfirmPassword.requestFocus();
+                }
+                focused = true;
+            }
+        } catch (MaxStreetCharacterException e) {
+            // If exceeded, show "MaxStreetCharacterException" in labelErrorStreet.
+            setErrorStyle(tfStreet, labelErrorStreet, e.getMessage());
+            if (!focused) {
+                tfStreet.requestFocus();
+                focused = true;
+            }
+        } catch (PatternZipIncorrectException e) {
+            // If invalid, show "PatternZipIncorrectException" in labelErrorZip.
+            setErrorStyle(tfZip, labelErrorZip, e.getMessage());
+            if (!focused) {
+                tfZip.requestFocus();
+                focused = true;
+            }
+        } catch (MaxCityCharacterException e) {
+            // If exceeded, show "MaxCityCharacterException" in labelErrorCity.
+            setErrorStyle(tfCity, labelErrorCity, e.getMessage());
+            if (!focused) {
+                tfCity.requestFocus();
+                focused = true;
+            }
+        } catch (PatternMobileIncorrectException e) {
+            setErrorStyle(tfMobile, labelErrorMobile, e.getMessage());
+            if (!focused) {
+                tfMobile.requestFocus();
+                focused = true;
+            }
         }
     }
 
+    /*}catch (ServerErrorException e) {
+                    // Handle server-related errors with an alert message.
+                    new Alert(Alert.AlertType.ERROR, "At this moment server is not available. Please try later.", ButtonType.OK).showAndWait();
+                    logger.warning(e.getLocalizedMessage());
+                } catch (UserExistErrorException e) {
+                    new Alert(Alert.AlertType.ERROR, "The email entered is already in use.", ButtonType.OK).showAndWait();
+                    logger.warning(e.getLocalizedMessage());
+                } catch (MaxThreadsErrorException e) {
+                    new Alert(Alert.AlertType.ERROR, "Your request can't be attended. Please try later.", ButtonType.OK).showAndWait();
+                    logger.warning(e.getLocalizedMessage());
+                }*/
     /**
      * Handles the action when the user clicks on the hyperlink to sign in.
      *
@@ -585,7 +571,8 @@ public class SignUpController {
      * @param event The action event triggered by the hyperlink click.
      */
     @FXML
-    private void handleHyperLinkSignIn(ActionEvent event) {
+    private void handleHyperLinkSignIn(ActionEvent event
+    ) {
         stage.close();
     }
 

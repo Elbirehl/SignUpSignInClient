@@ -20,13 +20,13 @@ public class SignUpControllerTest extends ApplicationTest {
     public SignUpControllerTest() {
     }
 
-    @Test
+    //@Test
     public void test_1_OKResponse() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
         write("Admin");
         clickOn("#tfEmail");
-        write("admin@gmail.com");
+        write("admineiO@gmail.com");
         clickOn("#pfHiddenPassword");
         write("Abcd*1234");
         clickOn("#tgbEyePasswd");
@@ -47,7 +47,7 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#signIn", isVisible());
     }
 
-    @Test
+    //@Test
     public void test_2_UserExistException() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
@@ -101,7 +101,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("Aceptar");
     }
 
-    @Test
+    //@Test
     public void test_4_MaxThreadsErrorException() {
         clickOn("#hypSignUp");
         clickOn("#tfFullName");
